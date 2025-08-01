@@ -2,40 +2,35 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CourseEditForm from './components/CourseEditFrom';
 import { CourseFormValues } from '../createCourse/types';
+import { getCourseById, updateCourse } from '../../../redux/slices/course';
+import { useDispatch,useSelector } from 'react-redux';
+import { AppDispatch } from '../../../redux/store';
+import { RootState } from '../../../redux/store';
 
-import { defaultCourseValues } from './components/defaultCourseValues.ts';
 
 
 const CourseEdit = () => {
   const { id } = useParams();
   const [initialData, setInitialData] = useState<CourseFormValues | null>(null);
-  const [loading, setLoading] = useState(true);
+
+    const { course, loading, error } = useSelector((state: RootState) => state.course);
+    useEffect(() => {
+  if (course) {
+    setInitialData(course);
+  }
+}, [course]);
 
 
+    const dispatch = useDispatch<AppDispatch>();
 
-
-useEffect(() => {
-  setTimeout(() => {
-    setInitialData(defaultCourseValues);
-    setLoading(false);
-  }, 500);
-}, [id]);
-
-
+   useEffect(() => {
+      if (id && typeof id === 'string') {
+        dispatch(getCourseById(id));
+      }
+    }, [id, dispatch]);
 
   const handleUpdate = async (values: CourseFormValues) => {
-    try {
-      const res = await fetch(`/api/courses/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values),
-      });
-
-      if (res.ok) alert('Course updated successfully!');
-      else alert('Failed to update course.');
-    } catch (err) {
-      console.error('Error updating course:', err);
-    }
+   dispatch( updateCourse({ id: id as string, courseData: values }))
   };
 
   if (loading) return <p>Loading...</p>;

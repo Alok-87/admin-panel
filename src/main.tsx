@@ -8,13 +8,15 @@ import App from "./App.tsx";
 import { AppWrapper } from "./components/common/PageMeta.tsx";
 import { ThemeProvider } from "./context/ThemeContext.tsx";
 import { Provider } from "react-redux";
-import store from "./features/store.ts";
+import {store }from "./redux/store";
+import {Toaster} from 'react-hot-toast'
 
 createRoot(document.getElementById("root")!).render(
   <ThemeProvider>
     <AppWrapper>
       <Provider store={store}>
         <App />
+        <Toaster/>
       </Provider>
     </AppWrapper>
   </ThemeProvider>

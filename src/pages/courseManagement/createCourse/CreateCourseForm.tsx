@@ -14,6 +14,10 @@ import TestimonialsSection from './components/TestimonialsSection';
 import CTASection from './components/CTASection';
 import SEOSection from './components/SEOSection';
 import { CourseFormValues } from './types';
+import { courseValidationSchema } from './validationSchema';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../redux/store';
+import { createCourse } from '../../../redux/slices/course';
 
 const CreateCourseForm = () => {
   const initialValues: CourseFormValues = {
@@ -23,9 +27,9 @@ const CreateCourseForm = () => {
     subtitle: '',
     description: '',
     duration: '',
-    successRate: '',
+    successRate: 0,
     qualifiedCount: '',
-    yearsOfExcellence: '',
+    yearsOfExcellence: 0,
     bannerImage: null,
     floatingHighlights: ['', ''],
     examPattern: {
@@ -39,10 +43,10 @@ const CreateCourseForm = () => {
     ],
     programs: [
       {
-        mode: 'Online',
+        mode: 'online',
         title: '',
         description: '',
-        price: '',
+        price:0,
         priceLabel: '',
         features: ['', ''],
       },
@@ -83,32 +87,33 @@ const CreateCourseForm = () => {
     brochureUrl: '',
     metaTitle: '',
     metaDescription: '',
-    metaKeywords: '',
+    metaKeywords: [],
     isPublished: false,
   };
 
+  const dispatch = useDispatch<AppDispatch>();
   const formik = useFormik({
     initialValues,
+    // validationSchema: courseValidationSchema,
     onSubmit: (values) => {
-      console.log(values);
-      // Handle form submission
+      dispatch(createCourse(values))
     },
   });
 
   return (
     <div className="max-w-7xl mx-auto p-6 bg-white rounded-xl">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">Create New Course</h1>
-      
+
       <form onSubmit={formik.handleSubmit} className="p-6 space-y-6">
         <BasicInfoSection formik={formik} />
         <KeyMetricsSection formik={formik} />
-         <MediaSection formik={formik} />
+        <MediaSection formik={formik} />
         <ExamPatternSection formik={formik} />
-       <TopicBreakdownSection formik={formik} />
-         <ProgramsSection formik={formik} />
+        <TopicBreakdownSection formik={formik} />
+        <ProgramsSection formik={formik} />
         <FeaturesSection formik={formik} />
         <TopicCoverageSection formik={formik} />
-       <FacultySection formik={formik} />
+        <FacultySection formik={formik} />
         <TestimonialsSection formik={formik} />
         <CTASection formik={formik} />
         <SEOSection formik={formik} />

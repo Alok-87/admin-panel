@@ -1,38 +1,38 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../redux/store';
+import { getAllCourses, deleteCourse } from '../../../redux/slices/course';
 import FilterSidebar from './components/FilterSidebar';
-import { Product } from './types';
-import { TbPencil, TbTrash } from 'react-icons/tb'
-import image_1 from '../../../Assets/image_1.jpeg'
-import image_2 from '../../../Assets/image_2.jpeg'
-import {  useNavigate } from 'react-router';
-import { FiFilter } from "react-icons/fi";
-
+import { TbPencil, TbTrash } from 'react-icons/tb';
+import { useNavigate } from 'react-router';
+import { FiFilter } from 'react-icons/fi';
 
 const CourseList = () => {
     const [showFilter, setShowFilter] = useState(false);
-    const [products, setProducts] = useState<Product[]>([]);
-    const [itemsPerPage, setItemsPerPage] = useState(10);
     const navigate = useNavigate();
 
-    // Mock data - replace with your actual data
-    const mockProducts: Product[] = [
-        {
-            id: 1,
-            title: 'Physics batch',
-            price: 3999,
-            image: image_1
-        },
-        {
-            id: 2,
-            title: 'Advance Physics',
-            price: 4999,
-            image: image_2
-        }
-    ];
+    const dispatch = useDispatch<AppDispatch>();
+    const { courses, loading } = useSelector((state: RootState) => state.course);
+
+
+    useEffect(() => {
+        dispatch(getAllCourses());
+    }, [dispatch]);
 
     const toggleFilter = () => {
         setShowFilter(!showFilter);
     };
+
+    const handleDelete = async (id: string) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this course?");
+        if (confirmDelete) {
+            const resultAction = await dispatch(deleteCourse(id));
+            if (deleteCourse.fulfilled.match(resultAction)) {
+                dispatch(getAllCourses()); // ✅ Refresh the course list
+            }
+        }
+    };
+
 
     return (
         <div className="container mx-auto px-4 py-6">
@@ -41,7 +41,7 @@ const CourseList = () => {
                 <div className="flex space-x-4">
                     <button
                         onClick={toggleFilter}
-                        className="px-4 py-2 flex items-center gap-2 align-baseline bg-gray-200 rounded-md hover:bg-gray-300"
+                        className="px-4 py-2 flex items-center gap-2 bg-gray-200 rounded-md hover:bg-gray-300"
                     >
                         <FiFilter className="text-lg" />
                         Filter
@@ -74,59 +74,57 @@ const CourseList = () => {
                 <table className="min-w-full bg-white">
                     <thead>
                         <tr className="border-b">
-                            <th className="py-3 px-4 font-semibold text-left">Courses</th>
+                            <th className="py-3 px-4 font-semibold text-left">Course</th>
                             <th className="py-3 px-4 font-semibold text-left">Title</th>
                             <th className="py-3 px-4 font-semibold text-left">Price</th>
                             <th className="py-3 px-4 font-semibold text-left">Edit</th>
                             <th className="py-3 px-4 font-semibold text-left">Delete</th>
-
                         </tr>
                     </thead>
                     <tbody>
-                        {mockProducts.length === 0 ? (
+                        {loading ? (
                             <tr>
-                                <td colSpan={6} className="py-6 text-center text-gray-500">
-                                    No data found!
+                                <td colSpan={5} className="py-6 text-center text-gray-500">
+                                    Loading...
+                                </td>
+                            </tr>
+                        ) : courses.length === 0 ? (
+                            <tr>
+                                <td colSpan={5} className="py-6 text-center text-gray-500">
+                                    No courses found!
                                 </td>
                             </tr>
                         ) : (
-                            mockProducts.map((product) => (
-                                <tr key={product.id} className="border-b hover:bg-gray-50 ">
+                            courses.map((course) => (
+                                <tr key={course._id} className="border-b hover:bg-gray-50">
                                     <td className="py-3 px-4">
                                         <img
-                                            src={product.image}
-                                            alt={product.title}
+                                            src={course.bannerImage}
+                                            alt={course.title}
                                             className="w-16 h-16 object-cover rounded cursor-pointer"
-                                            onClick={()=> navigate('/course/:3848u398')}
+                                            onClick={() => navigate(`/course/${course._id}`)}
                                         />
                                     </td>
-                                    <td className="py-3 px-4">{product.title}</td>
-                                    <td className="py-3 px-4">₹{product.price.toFixed(2)}</td>
-
-                                    {/* Edit Column */}
+                                    <td className="py-3 px-4">{course.title}</td>
                                     <td className="py-3 px-4">
-                                        <button
-                                            onClick={() => console.log('Edit', product.id)}
-                                            className="px-3 py-1 text-black hover:text-brand-500"
-                                        >
-                                            <TbPencil className='h-5 w-5' onClick={()=> navigate('/editCourse/:3848u398')}/>
-                                        </button>
+                                        ₹{course.programs[0]?.price?.toFixed(2) ?? 'N/A'}
                                     </td>
-
-                                    {/* Delete Column */}
                                     <td className="py-3 px-4">
-                                        <button
-                                            onClick={() => console.log('Delete', product.id)}
-                                            className="px-3 py-1 text-black hover:text-brand-500"
-                                        >
-                                            <TbTrash className='h-5 w-5' />
-                                        </button>
+                                        <TbPencil
+                                            className="h-5 w-5 cursor-pointer hover:text-brand-500"
+                                            onClick={() => navigate(`/editCourse/${course._id}`)} 
+                                        />
+                                    </td>
+                                    <td className="py-3 px-4">
+                                        <TbTrash
+                                            className="h-5 w-5 cursor-pointer hover:text-brand-500"
+                                            onClick={() => handleDelete(course._id)} // ✅ Wrap in arrow function
+                                        />
                                     </td>
                                 </tr>
                             ))
                         )}
                     </tbody>
-
                 </table>
             </div>
 

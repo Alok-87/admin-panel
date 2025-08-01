@@ -8,7 +8,7 @@ const ProgramsSection = ({ formik }: { formik: FormikProps<CourseFormValues> }) 
     formik.setFieldValue('programs', [
       ...formik.values.programs,
       {
-        mode: 'Online',
+        mode: 'online',
         title: '',
         description: '',
         price: '',
@@ -104,9 +104,8 @@ const ProgramsSection = ({ formik }: { formik: FormikProps<CourseFormValues> }) 
                   }
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="Online">Online</option>
-                  <option value="Offline">Offline</option>
-                  <option value="Hybrid">Hybrid</option>
+                  <option value="online">online</option>
+                  <option value="offline">offline</option>
                 </select>
               </div>
 
@@ -149,17 +148,17 @@ const ProgramsSection = ({ formik }: { formik: FormikProps<CourseFormValues> }) 
                     Price
                   </label>
                   <div className="relative">
-                    <span className="absolute left-3 top-2.5 text-gray-500">₹</span>
                     <input
                       type="number"
                       value={program.price}
                       onChange={(e) =>
-                        handleProgramChange(programIndex, 'price', e.target.value)
+                        handleProgramChange(programIndex, 'price', Number(e.target.value))
                       }
-                      className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder="0"
                       min="0"
                     />
+
                   </div>
                 </div>
                 <div>

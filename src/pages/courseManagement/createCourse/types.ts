@@ -6,9 +6,9 @@ export interface CourseFormValues {
   subtitle: string;
   description: string;
   duration: string;
-  successRate: number | '';
+  successRate: number;
   qualifiedCount: string;
-  yearsOfExcellence: number | '';
+  yearsOfExcellence: number ;
   bannerImage: File | null;
   floatingHighlights: string[];
   examPattern: {
@@ -24,7 +24,7 @@ export interface CourseFormValues {
     mode: string;
     title: string;
     description: string;
-    price: number | '';
+    price: number ;
     priceLabel: string;
     features: string[];
   }>;
@@ -56,6 +56,6 @@ export interface CourseFormValues {
   brochureUrl: string;
   metaTitle: string;
   metaDescription: string;
-  metaKeywords: string;
+  metaKeywords: string[];
   isPublished: boolean;
 }

@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { ChevronLeftIcon,EyeCloseIcon, EyeIcon } from '../../icons';
-import { AppDispatch, RootState } from '../../features/store';
-import { loginUser } from '../../features/auth/authApi';
-import {Link} from "react-router-dom"
+import { AppDispatch, RootState } from '../../redux/store';
+import { login } from '../../redux/slices/auth';
+import {Link, useNavigate} from "react-router-dom"
 
 const validationSchema = Yup.object().shape({
-  username: Yup.string().required('Username is required'),
+  email: Yup.string().required('email is required'),
   password: Yup.string().required('Password is required'),
 });
 
@@ -16,10 +16,13 @@ const SignInForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const { loading, error } = useSelector((state: RootState) => state.auth);
+  const navigate = useNavigate();
 
-  const handleSubmit = (values: { username: string; password: string }) => {
-    console.log(values)
-    dispatch(loginUser(values));
+  const handleSubmit = async(values: { email: string; password: string }) => {
+    const resultAction = await dispatch(login(values));
+     if (login.fulfilled.match(resultAction)) {
+        navigate('/'); 
+      } 
   };
 
   return (
@@ -36,25 +39,25 @@ const SignInForm: React.FC = () => {
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
         <div>
           <h1 className="mb-2 font-semibold text-gray-800 dark:text-white/90  text-title-sm">Sign In</h1>
-          <p className="text-sm text-gray-500">Enter your username and password to sign in!</p>
+          <p className="text-sm text-gray-500">Enter your email and password to sign in!</p>
           {error && <div className="text-red-500">{error}</div>}
         </div>
         <Formik
-          initialValues={{ username: '', password: '' }}
+          initialValues={{ email: '', password: '' }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
           {() => (
             <Form className="space-y-6">
-              {/* Username Field */}
+              {/* Email Field */}
               <div>
-                <label className="block mb-2 dark:text-gray-400">Username</label>
+                <label className="block mb-2 dark:text-gray-400">Email</label>
                 <Field
-                  name="username"
+                  name="email"
                   className="w-full p-2 border rounded dark:text-gray-400"
-                  placeholder="Enter your username"
+                  placeholder="Enter your Email"
                 />
-                <ErrorMessage name="username" component="div" className="text-red-500 text-sm" />
+                <ErrorMessage name="email" component="div" className="text-red-500 text-sm" />
               </div>
 
               {/* Password Field */}

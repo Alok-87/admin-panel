@@ -4,7 +4,7 @@ import {
     FiFile, FiBook, FiImage, FiFileText, FiAward, FiFilm, FiClipboard, FiBarChart2, FiUsers, FiBriefcase,
     FiStar, FiDownload, FiBookOpen, FiTag, FiEdit2, FiInfo, FiList, FiCheckCircle, FiXCircle, FiExternalLink
 } from "react-icons/fi";
-import { FaBookOpen, FaHeading, FaLink, FaFolder, FaClock, FaRegFileAlt,FaAtom  } from "react-icons/fa"; // Import any icon you like
+import { FaBookOpen, FaHeading, FaLink, FaFolder, FaClock, FaRegFileAlt, FaAtom } from "react-icons/fa"; // Import any icon you like
 import { TbPercentage20 } from "react-icons/tb";
 import { HiOutlineSparkles } from "react-icons/hi2"; // Sparkle icon for highlights
 import { MdOutlineDescription, MdOutlinePerson, MdOutlineEmojiEmotions, MdOutlineToggleOn, MdDescription } from "react-icons/md";
@@ -13,7 +13,7 @@ import { TfiQuoteRight } from "react-icons/tfi";
 
 interface CourseDetailProps {
     course: {
-        id: string;
+        _id: string; // ✅ match backend and Redux structure
         title: string;
         slug: string;
         category: string;
@@ -24,17 +24,19 @@ interface CourseDetailProps {
         qualifiedCount?: string;
         yearsOfExcellence?: number;
         bannerImage?: string;
-        highlights: string[];
+        floatingHighlights: string[]; // ✅ rename to match actual property
         examPattern: {
             questionFormat: string;
             duration: string;
             markingSystem: string;
         };
         topicBreakdown: Array<{
+            _id?: string;
             topic: string;
             percentage: number;
         }>;
         programs: Array<{
+            _id?: string;
             mode: string;
             title: string;
             description: string;
@@ -43,15 +45,18 @@ interface CourseDetailProps {
             features: string[];
         }>;
         whyChooseUs: Array<{
+            _id?: string;
             icon: string;
             title: string;
             description: string;
         }>;
         topicCoverage: Array<{
+            _id?: string;
             title: string;
             description: string;
         }>;
         faculty: Array<{
+            _id?: string;
             name: string;
             designation: string;
             bio: string;
@@ -59,6 +64,7 @@ interface CourseDetailProps {
             photo?: string;
         }>;
         testimonials: Array<{
+            _id?: string;
             name: string;
             scoreSummary: string;
             subjectScore: string;
@@ -71,6 +77,7 @@ interface CourseDetailProps {
         isPublished: boolean;
     };
 }
+
 
 export const CourseDetail = ({ course }: CourseDetailProps) => {
     return (
@@ -190,8 +197,8 @@ export const CourseDetail = ({ course }: CourseDetailProps) => {
                         </label>
 
                         <ul className="list-disc pl-6 space-y-2 text-gray-800">
-                            {course.highlights.length > 0 ? (
-                                course.highlights.map((highlight, index) => (
+                            {course.floatingHighlights.length > 0 ? (
+                                course.floatingHighlights.map((highlight, index) => (
                                     <li key={index} className="flex items-start gap-2">
                                         <FiFileText className="mt-1 text-brand-500" />
                                         <span>{highlight}</span>
@@ -213,21 +220,21 @@ export const CourseDetail = ({ course }: CourseDetailProps) => {
                         <label className="block text-sm font-medium text-gray-700">Question Format</label>
                         <div className="p-2 bg-gray-50 rounded border flex items-center">
                             <FiClipboard className="mr-2 text-brand-500" />
-                            {course.examPattern.questionFormat}
+                            {course. examPattern?.questionFormat}
                         </div>
                     </div>
                     <div className="space-y-2">
                         <label className="block text-sm font-medium text-gray-700">Exam Duration</label>
                         <div className="p-2 bg-gray-50 rounded border flex items-center">
                             <FiFilm className="mr-2 text-brand-500" />
-                            {course.examPattern.duration}
+                            {course.examPattern?.duration}
                         </div>
                     </div>
                     <div className="space-y-2">
                         <label className="block text-sm font-medium text-gray-700">Marking System</label>
                         <div className="p-2 bg-gray-50 rounded border flex items-center">
                             <FiBarChart2 className="mr-2 text-brand-500" />
-                            {course.examPattern.markingSystem}
+                            {course.examPattern?.markingSystem}
                         </div>
                     </div>
                 </div>
@@ -374,7 +381,7 @@ export const CourseDetail = ({ course }: CourseDetailProps) => {
                                 <h4 className="font-semibold text-gray-800 text-lg">{topic.title}</h4>
                             </div>
                             <div className="flex items-start gap-2 text-sm text-gray-600">
-                                
+
                                 <p className="whitespace-pre-line">{topic.description}</p>
                             </div>
                         </div>

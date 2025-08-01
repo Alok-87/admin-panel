@@ -39,7 +39,6 @@ export default function App() {
         />
 
         {/* Protected Routes */}
-        <Route >
           <Route element={<AppLayout />}>
             <Route index path="/" element={<Home />} />
             <Route path="/course/add" element={<CreateCourseForm />} />
@@ -49,7 +48,6 @@ export default function App() {
             <Route path="/admission/inquiries" element={<Inquiries/>} />
             <Route path="/admission/manual-entry" element={<Manual_Entry />} />
           </Route>
-        </Route>
 
         {/* Fallback Route */}
         <Route path="*" element={<NotFound />} />

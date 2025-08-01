@@ -3,7 +3,12 @@ import { FormikProps } from 'formik';
 import { CourseFormValues } from '../types';
 import CollapsibleSection from './CollapsibleSection';
 
+
+
 const BasicInfoSection = ({ formik }: { formik: FormikProps<CourseFormValues> }) => {
+  
+
+
   return (
     <CollapsibleSection title="Basic Course Info">
       <div className="space-y-4">
