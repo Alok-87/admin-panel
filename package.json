@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@cloudinary/react": "^1.14.3",
+    "@cloudinary/url-gen": "^1.21.0",
     "@faker-js/faker": "^9.6.0",
     "@fullcalendar/core": "^6.1.15",
     "@fullcalendar/daygrid": "^6.1.15",
@@ -26,6 +28,7 @@
     "axios": "^1.8.4",
     "classnames": "^2.5.1",
     "clsx": "^2.1.1",
+    "dotenv": "^17.2.1",
     "faker-js": "^1.0.0",
     "flatpickr": "^4.6.13",
     "formik": "^2.4.6",

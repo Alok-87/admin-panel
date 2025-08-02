@@ -30,7 +30,7 @@ const CreateCourseForm = () => {
     successRate: 0,
     qualifiedCount: '',
     yearsOfExcellence: 0,
-    bannerImage: null,
+    bannerImageUrl: null,
     floatingHighlights: ['', ''],
     examPattern: {
       questionFormat: '',
@@ -70,7 +70,7 @@ const CreateCourseForm = () => {
         designation: '',
         bio: '',
         expertise: [''],
-        photo: null,
+        photoUrl: null,
       },
     ],
     testimonials: [
@@ -79,7 +79,7 @@ const CreateCourseForm = () => {
         scoreSummary: '',
         subjectScore: '',
         quote: '',
-        photo: null,
+        photoUrl: null,
       },
     ],
     showTrialButton: false,

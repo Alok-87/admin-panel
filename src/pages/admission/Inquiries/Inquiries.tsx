@@ -1,43 +1,26 @@
-import InquiryList from "./InquiriesList";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../redux/store'; // adjust path if needed
+import { getAllInQuiries } from '../../../redux/slices/admission';
+import InquiriesList from './InquiriesList';
 
-const response = {
-  success: true,
-  data: [
-    {
-      status: "pending",
-      _id: "688b4606a7a5034eb44ebcfe",
-      name: "John Doe",
-      phone: "1234567890",
-      email: "john.doe@example.com",
-      courseInterest: "JEE",
-      message: "I would like to know more about the JEE course.",
-      followUps: [],
-      createdAt: "2025-07-31T10:31:34.513Z",
-      __v: 0,
-    },
-     {
-      status: "pending",
-      _id: "688b4606a7a5034eb44ebcfe",
-      name: "John Doe",
-      phone: "1234567890",
-      email: "john.doe@example.com",
-      courseInterest: "JEE",
-      message: "I would like to know more about the JEE course.",
-      followUps: [],
-      createdAt: "2025-07-31T10:31:34.513Z",
-      __v: 0,
-    },
-  ],
-};
+const EnquiriesPage: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
 
-// ✅ Cast to match `Inquiry[]` interface
-const castedInquiries = response.data as [];
+  const { inquiries, loading, error } = useSelector((state: RootState) => state.admission);
 
-const EnquiriesPage = () => {
+  useEffect(() => {
+    dispatch(getAllInQuiries());
+  }, [dispatch]);
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4 text-brand-500">Admission Inquiries</h1>
-      <InquiryList inquiries={castedInquiries} />
+
+      {loading && <p>Loading inquiries...</p>}
+      {error && <p className="text-red-500">Error: {error}</p>}
+      {!loading && inquiries.length === 0 && <p>No inquiries found.</p>}
+      {!loading && inquiries.length > 0 && <InquiriesList inquiries={inquiries} />}
     </div>
   );
 };

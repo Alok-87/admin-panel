@@ -1,11 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit'
 import authReducer from './slices/auth'
 import courseReducer from './slices/course'
+import admissionReducer from './slices/admission'
+import cloudinaryReducer from './slices/cloudinary'
 
 export const store = configureStore({
   reducer: {
     auth : authReducer,
-    course :courseReducer
+    course :courseReducer,
+    admission:admissionReducer,
+    cloudinary:cloudinaryReducer
   },
 })
 

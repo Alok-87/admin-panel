@@ -9,7 +9,7 @@ export interface CourseFormValues {
   successRate: number;
   qualifiedCount: string;
   yearsOfExcellence: number ;
-  bannerImage: File | null;
+  bannerImageUrl: File | null |string;
   floatingHighlights: string[];
   examPattern: {
     questionFormat: string;
@@ -42,14 +42,14 @@ export interface CourseFormValues {
     designation: string;
     bio: string;
     expertise: string[];
-    photo: File | null;
+    photoUrl: File | null | string;
   }>;
   testimonials: Array<{
     name: string;
     scoreSummary: string;
     subjectScore: string;
     quote: string;
-    photo: File | null;
+    photoUrl: File | null | string;
   }>;
   showTrialButton: boolean;
   showBrochureButton: boolean;

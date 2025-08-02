@@ -1,14 +1,31 @@
-// MediaSection.tsx
 import { FormikProps } from 'formik';
+import { useEffect } from 'react';
 import { CourseFormValues } from '../types';
 import CollapsibleSection from './CollapsibleSection';
+import { AppDispatch,RootState } from '../../../../redux/store';
+import { uploadImage, resetImageState } from '../../../../redux/slices/cloudinary';
+import { useDispatch ,useSelector} from 'react-redux';
+
 
 const MediaSection = ({ formik }: { formik: FormikProps<CourseFormValues> }) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { url, uploading } = useSelector((state: RootState) => state.cloudinary);
+
+
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.currentTarget.files) {
-      formik.setFieldValue('bannerImage', event.currentTarget.files[0]);
+    const file = event.currentTarget.files?.[0];
+    if (file) {
+      dispatch(uploadImage(file));
     }
   };
+
+  // When upload completes, update formik field
+  useEffect(() => {
+    if (url) {
+      formik.setFieldValue('bannerImageUrl', url);
+      dispatch(resetImageState()); // Reset cloudinary state after using the URL
+    }
+  }, [url, dispatch, formik]);
 
   const handleHighlightChange = (index: number, value: string) => {
     const newHighlights = [...formik.values.floatingHighlights];
@@ -32,8 +49,8 @@ const MediaSection = ({ formik }: { formik: FormikProps<CourseFormValues> }) => 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Banner Image*
-            {formik.values.bannerImage && (
-              <span className="ml-2 text-green-600 text-sm">Image selected</span>
+            {formik.values.bannerImageUrl && (
+              <span className="ml-2 text-green-600 text-sm">Image uploaded</span>
             )}
           </label>
           <div className="flex items-center">
@@ -45,15 +62,26 @@ const MediaSection = ({ formik }: { formik: FormikProps<CourseFormValues> }) => 
                 onChange={handleImageChange}
                 className="hidden"
                 accept="image/*"
-                required
               />
             </label>
-            {formik.values.bannerImage && (
+            {uploading && <span className="ml-3 text-sm text-yellow-600">Uploading...</span>}
+            {formik.values.bannerImageUrl && typeof formik.values.bannerImageUrl === 'string' && (
               <span className="ml-3 text-sm text-gray-600">
-                {(formik.values.bannerImage as File).name}
+                Uploaded
               </span>
             )}
           </div>
+
+          {/* Image Preview */}
+          {formik.values.bannerImageUrl && typeof formik.values.bannerImageUrl === 'string' && (
+            <div className="mt-3">
+              <img
+                src={formik.values.bannerImageUrl}
+                alt="Banner Preview"
+                className="w-full max-w-md rounded-md border"
+              />
+            </div>
+          )}
           <p className="mt-1 text-xs text-gray-500">Recommended size: 1200x400 pixels</p>
         </div>
 

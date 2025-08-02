@@ -1,21 +1,27 @@
-// FacultySection.tsx
 import { FormikProps } from 'formik';
+import { useState, useEffect } from 'react';
 import { CourseFormValues } from '../types';
 import CollapsibleSection from './CollapsibleSection';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../../redux/store';
+import { uploadImage, resetImageState } from '../../../../redux/slices/cloudinary';
 
 const FacultySection = ({ formik }: { formik: FormikProps<CourseFormValues> }) => {
   const facultyMembers = formik.values.faculty || [];
+  const dispatch = useDispatch<AppDispatch>();
+  const { url, uploading } = useSelector((state: RootState) => state.cloudinary);
+
+  const [uploadingIndex, setUploadingIndex] = useState<number | null>(null);
 
   const handleAddFaculty = () => {
     formik.setFieldValue('faculty', [
       ...facultyMembers,
-      { name: '', designation: '', bio: '', expertise: [], photo: null }
+      { name: '', designation: '', bio: '', expertise: [], photo: null },
     ]);
   };
 
   const handleRemoveFaculty = (index: number) => {
-    const newFaculty = [...facultyMembers];
-    newFaculty.splice(index, 1);
+    const newFaculty = facultyMembers.filter((_, i) => i !== index);
     formik.setFieldValue('faculty', newFaculty);
   };
 
@@ -48,12 +54,22 @@ const FacultySection = ({ formik }: { formik: FormikProps<CourseFormValues> }) =
   };
 
   const handlePhotoChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const newFaculty = [...facultyMembers];
-      newFaculty[index].photo = e.target.files[0];
-      formik.setFieldValue('faculty', newFaculty);
-    }
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingIndex(index);
+    dispatch(uploadImage(file));
   };
+
+  // After upload completes, update the faculty's photo
+  useEffect(() => {
+    if (url !== null && uploadingIndex !== null) {
+      const newFaculty = [...facultyMembers];
+      newFaculty[uploadingIndex].photoUrl = url;
+      formik.setFieldValue('faculty', newFaculty);
+      dispatch(resetImageState());
+      setUploadingIndex(null);
+    }
+  }, [url]);
 
   return (
     <CollapsibleSection title="Faculty Details">
@@ -63,27 +79,23 @@ const FacultySection = ({ formik }: { formik: FormikProps<CourseFormValues> }) =
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Faculty Name*
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Faculty Name*</label>
                   <input
                     type="text"
                     value={faculty.name}
                     onChange={(e) => handleFacultyChange(index, 'name', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border rounded-md"
                     placeholder="Dr. John Doe"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Designation*
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Designation*</label>
                   <input
                     type="text"
                     value={faculty.designation}
                     onChange={(e) => handleFacultyChange(index, 'designation', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border rounded-md"
                     placeholder="Senior Physics Professor"
                     required
                   />
@@ -91,13 +103,11 @@ const FacultySection = ({ formik }: { formik: FormikProps<CourseFormValues> }) =
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Bio / Experience Summary*
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Bio / Experience Summary*</label>
                 <textarea
                   value={faculty.bio}
                   onChange={(e) => handleFacultyChange(index, 'bio', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border rounded-md"
                   placeholder="Summary of qualifications and experience..."
                   rows={3}
                   required
@@ -105,22 +115,20 @@ const FacultySection = ({ formik }: { formik: FormikProps<CourseFormValues> }) =
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Expertise Areas
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Expertise Areas</label>
                 <div className="space-y-2">
-                  {faculty.expertise.map((expertise, expertiseIndex) => (
-                    <div key={expertiseIndex} className="flex items-center gap-2">
+                  {faculty.expertise.map((exp, expIndex) => (
+                    <div key={expIndex} className="flex items-center gap-2">
                       <input
                         type="text"
-                        value={expertise}
-                        onChange={(e) => handleExpertiseChange(index, expertiseIndex, e.target.value)}
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        value={exp}
+                        onChange={(e) => handleExpertiseChange(index, expIndex, e.target.value)}
+                        className="flex-1 px-3 py-2 border rounded-md"
                         placeholder="e.g. Quantum Mechanics"
                       />
                       <button
                         type="button"
-                        onClick={() => handleRemoveExpertise(index, expertiseIndex)}
+                        onClick={() => handleRemoveExpertise(index, expIndex)}
                         className="text-red-500 hover:text-red-700"
                       >
                         Remove
@@ -138,22 +146,29 @@ const FacultySection = ({ formik }: { formik: FormikProps<CourseFormValues> }) =
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Faculty Photo
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Faculty Photo</label>
                 <input
                   type="file"
                   accept="image/*"
                   onChange={(e) => handlePhotoChange(index, e)}
-                  className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                  disabled={uploading}
+                  className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                 />
-                {faculty.photo && (
-                  <div className="mt-2 text-sm text-gray-500">
-                    Selected: {faculty.photo instanceof File ? faculty.photo.name : faculty.photo}
+                {uploadingIndex === index && uploading && (
+                  <div className="mt-1 text-yellow-500 text-sm">Uploading...</div>
+                )}
+                {faculty.photoUrl && typeof faculty.photoUrl === 'string' && (
+                  <div className="mt-2">
+                    <img
+                      src={faculty.photoUrl}
+                      alt={`Faculty ${faculty.name}`}
+                      className="w-24 h-24 object-cover rounded-md border"
+                    />
                   </div>
                 )}
               </div>
             </div>
+
             {facultyMembers.length > 1 && (
               <button
                 type="button"
@@ -169,7 +184,7 @@ const FacultySection = ({ formik }: { formik: FormikProps<CourseFormValues> }) =
         <button
           type="button"
           onClick={handleAddFaculty}
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
         >
           Add Faculty Member
         </button>

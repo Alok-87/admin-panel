@@ -13,8 +13,10 @@ import ProtectedLayout from "./layout/ProtectedLayout";
 import { useEffect } from "react";
 import Course from "./pages/courseManagement/courseDetail/Course";
 import CourseEdit from "./pages/courseManagement/courseEdit/CourseEdit";
-import Inquiries from "./pages/admission/Inquiries/Inquiries";
-import Manual_Entry from "./pages/admission/Manual_Entry";
+import Inquiries from "./pages/admission/inquiries/Inquiries";
+import Manual_Entry from "./pages/admission/manualEntry/Manual_Entry";
+import AllMedia from "./pages/media/allMedia/AllMedia";
+import UploadMedia from "./pages/media/uploadMedia/uploadMedia";
 
 export default function App() {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
@@ -47,6 +49,8 @@ export default function App() {
             <Route path="/editCourse/:id" element={<CourseEdit/>}/>
             <Route path="/admission/inquiries" element={<Inquiries/>} />
             <Route path="/admission/manual-entry" element={<Manual_Entry />} />
+            <Route path="/allmedia" element={<AllMedia/>}/>
+             <Route path="/uploadmedia" element={<UploadMedia/>}/>
           </Route>
 
         {/* Fallback Route */}
