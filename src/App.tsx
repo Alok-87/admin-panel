@@ -16,7 +16,10 @@ import CourseEdit from "./pages/courseManagement/courseEdit/CourseEdit";
 import Inquiries from "./pages/admission/inquiries/Inquiries";
 import Manual_Entry from "./pages/admission/manualEntry/Manual_Entry";
 import AllMedia from "./pages/media/allMedia/AllMedia";
-import UploadMedia from "./pages/media/uploadMedia/uploadMedia";
+import UploadMedia from "./pages/media/uploadMedia/UploadMedia";
+import Classes from "./pages/classes/classes/Classes";
+import CreateClass from "./pages/classes/createClasses/CreateClass";
+import EditClass from "./pages/classes/editClasses/EditClass";
 
 export default function App() {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
@@ -51,6 +54,9 @@ export default function App() {
             <Route path="/admission/manual-entry" element={<Manual_Entry />} />
             <Route path="/allmedia" element={<AllMedia/>}/>
              <Route path="/uploadmedia" element={<UploadMedia/>}/>
+             <Route path="/live-classes/calendar" element={<Classes/>}/>
+             <Route path="/live-classes/create" element={<CreateClass/>}/>
+             <Route path="/live-classes/edit/:id" element={<EditClass/>}/>
           </Route>
 
         {/* Fallback Route */}

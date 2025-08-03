@@ -86,7 +86,7 @@ interface Course {
     successRate: number;
     qualifiedCount: string;
     yearsOfExcellence: number;
-    bannerImage?: string; // Optional: if exists in your backend
+    bannerImageUrl: string; // Optional: if exists in your backend
     brochureUrl: string;
 
     floatingHighlights: string[];
@@ -132,7 +132,7 @@ interface Course {
         designation: string;
         bio: string;
         expertise: string[];
-        photo?: string; // Optional: if stored in DB
+        photoUrl: string; // Optional: if stored in DB
     }>;
 
     testimonials: Array<{
@@ -141,7 +141,7 @@ interface Course {
         scoreSummary: string;
         subjectScore: string;
         quote: string;
-        photo?: string; // Optional
+        photoUrl: string; // Optional
     }>;
 
     showTrialButton: boolean;

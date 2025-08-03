@@ -41,11 +41,17 @@ const navItems: NavItem[] = [
     name: "Admissions",
     subItems: [{ name: "Inquiries", path: "/admission/inquiries", pro: false },{ name: "Manual Entry", path: "/admission/manual-entry", pro: false }],
   },
-  {
+  {   
     icon: <GridIcon />,
     name: "Media Library",   
     subItems: [{ name: "All Media", path: "/allmedia", pro: false },{ name: "Upload Media", path: "/uploadmedia", pro: false }],
   },
+  {   
+    icon: <GridIcon />,
+    name: "Live Classes",   
+    subItems: [{ name: "Calendar View", path: "/live-classes/calendar", pro: false },{ name: "Schedule Class", path: "/live-classes/create", pro: false }],
+  },
+
 
   // {
   //   icon: <CalenderIcon />,

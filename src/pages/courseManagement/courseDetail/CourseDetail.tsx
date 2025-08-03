@@ -23,7 +23,7 @@ interface CourseDetailProps {
         successRate?: number;
         qualifiedCount?: string;
         yearsOfExcellence?: number;
-        bannerImage?: string;
+        bannerImageUrl: string;
         floatingHighlights: string[]; // ✅ rename to match actual property
         examPattern: {
             questionFormat: string;
@@ -61,7 +61,7 @@ interface CourseDetailProps {
             designation: string;
             bio: string;
             expertise: string[];
-            photo?: string;
+            photoUrl: string;
         }>;
         testimonials: Array<{
             _id?: string;
@@ -69,7 +69,7 @@ interface CourseDetailProps {
             scoreSummary: string;
             subjectScore: string;
             quote: string;
-            photo?: string;
+            photoUrl: string;
         }>;
         showTrialButton: boolean;
         showBrochureButton: boolean;
@@ -175,9 +175,9 @@ export const CourseDetail = ({ course }: CourseDetailProps) => {
                             Course Banner
                         </label>
 
-                        {course.bannerImage ? (
+                        {course.bannerImageUrl ? (
                             <img
-                                src={course.bannerImage}
+                                src={course.bannerImageUrl}
                                 alt="Course banner"
                                 className="w-full max-h-80  rounded-xl border border-gray-300 shadow"
                             />
@@ -400,9 +400,9 @@ export const CourseDetail = ({ course }: CourseDetailProps) => {
                         >
                             {/* Photo + Name + Designation */}
                             <div className="flex items-start gap-4">
-                                {faculty.photo ? (
+                                {faculty.photoUrl ? (
                                     <img
-                                        src={faculty.photo}
+                                        src={faculty.photoUrl}
                                         alt={faculty.name}
                                         className="w-16 h-16 rounded-full object-cover shadow"
                                     />
@@ -464,9 +464,9 @@ export const CourseDetail = ({ course }: CourseDetailProps) => {
                         >
                             {/* Avatar + Name + Scores */}
                             <div className="flex items-start gap-4">
-                                {testimonial.photo ? (
+                                {testimonial.photoUrl ? (
                                     <img
-                                        src={testimonial.photo}
+                                        src={testimonial.photoUrl}
                                         alt={testimonial.name}
                                         className="w-12 h-12 rounded-full object-cover shadow"
                                     />

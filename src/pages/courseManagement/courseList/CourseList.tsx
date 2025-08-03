@@ -99,7 +99,7 @@ const CourseList = () => {
                                 <tr key={course._id} className="border-b hover:bg-gray-50">
                                     <td className="py-3 px-4">
                                         <img
-                                            src={course.bannerImage}
+                                            src={course.bannerImageUrl}
                                             alt={course.title}
                                             className="w-16 h-16 object-cover rounded cursor-pointer"
                                             onClick={() => navigate(`/course/${course._id}`)}

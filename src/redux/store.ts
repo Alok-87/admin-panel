@@ -3,13 +3,15 @@ import authReducer from './slices/auth'
 import courseReducer from './slices/course'
 import admissionReducer from './slices/admission'
 import cloudinaryReducer from './slices/cloudinary'
+import classReducer from './slices/liveClass'
 
 export const store = configureStore({
   reducer: {
     auth : authReducer,
     course :courseReducer,
     admission:admissionReducer,
-    cloudinary:cloudinaryReducer
+    cloudinary:cloudinaryReducer,
+    class:classReducer
   },
 })
 
