@@ -22,6 +22,7 @@ import CreateClass from "./pages/classes/createClasses/CreateClass";
 import EditClass from "./pages/classes/editClasses/EditClass";
 import CreateAnnouncements from "./pages/announcements/createannouncements/CreateAnnouncements";
 import Announcements from "./pages/announcements/announcements/Announcements";
+import EditAnnouncements from "./pages/announcements/editannouncements/EditAnnouncements";
 
 export default function App() {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
@@ -61,6 +62,7 @@ export default function App() {
              <Route path="/live-classes/edit/:id" element={<EditClass/>}/>
              <Route path="/announcements/create" element={<CreateAnnouncements/>}/>
              <Route path="/announcements" element={<Announcements/>}/>
+             <Route path="/announcements/edit/:id" element={<EditAnnouncements/>}/>
           </Route>
 
         {/* Fallback Route */}

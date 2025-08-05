@@ -4,9 +4,11 @@ import { deleteAnnouncement, getAllAnnouncement } from '../../../redux/slices/an
 import { AppDispatch, RootState } from '../../../redux/store';
 import { FiFilter,  FiEdit, FiTrash2 } from 'react-icons/fi';
 import { format } from 'date-fns';
+import { useNavigate } from 'react-router';
 
 const Announcements = () => {
     const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
     const { announcements,  error } = useSelector(
         (state: RootState) => state.announcement
     );
@@ -32,6 +34,11 @@ const Announcements = () => {
                 dispatch(getAllAnnouncement());
             }
         }
+    }
+
+    const handleEdit = (id: string) => 
+    {
+        navigate(`/announcements/edit/${id}`)
     }
 
     return (

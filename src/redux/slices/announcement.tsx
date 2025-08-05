@@ -21,6 +21,7 @@ interface AnnouncementState {
     error: string | null;
     success: boolean;
     announcements: Announcement[];
+    announcement?: Announcement | null;
 }
 
 // ✅ Initial state
@@ -29,6 +30,7 @@ const initialState: AnnouncementState = {
     error: null,
     success: false,
     announcements: [],
+    announcement: null,
 };
 
 // ✅ Async thunk to create announcement
@@ -53,7 +55,6 @@ export const getAllAnnouncement = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const response = await axiosInstance.get('/api/announcements');
-            console.log("check", response)
             return response.data.data;
         } catch (err: any) {
             toast.error(err.response?.data?.message || 'Failed to fetch announcements');
@@ -68,7 +69,7 @@ export const deleteAnnouncement = createAsyncThunk(
         try {
             const response = await axiosInstance.delete(`/api/announcements/${announcementId}`);
             toast.success('Announcement deleted successfully');
-            return response.data; 
+            return response.data;
             return announcementId; // We'll use this to remove it from local state
         } catch (err: any) {
             toast.error(err.response?.data?.message || 'Failed to delete announcement');
@@ -76,6 +77,40 @@ export const deleteAnnouncement = createAsyncThunk(
         }
     }
 );
+
+
+// ✅ Async thunk to get a single announcement by ID
+export const getAnnouncementById = createAsyncThunk(
+    'announcement/getAnnouncementById',
+    async (id: string, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.get(`/api/announcements/${id}`);
+            return response.data.data; // Assuming your backend returns the announcement in `data.data`
+        } catch (err: any) {
+            toast.error(err.response?.data?.message || 'Failed to fetch announcement');
+            return rejectWithValue(err.response?.data?.message || 'Failed to fetch announcement');
+        }
+    }
+);
+
+// ✅ Async thunk to update announcement
+export const updateAnnouncement = createAsyncThunk(
+    'announcement/updateAnnouncement',
+    async (
+        { id, formData }: { id: string; formData: AnnouncementPayload },
+        { rejectWithValue }
+    ) => {
+        try {
+            const response = await axiosInstance.put(`/api/announcements/${id}`, formData);
+            toast.success('Announcement updated successfully');
+            return response.data.data; // Assuming the updated announcement is in `data.data`
+        } catch (err: any) {
+            toast.error(err.response?.data?.message || 'Announcement update failed');
+            return rejectWithValue(err.response?.data?.message || 'Announcement update failed');
+        }
+    }
+);
+
 
 // ✅ Slice
 const announcementSlice = createSlice({
@@ -131,6 +166,38 @@ const announcementSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload as string || 'Something went wrong';
             })
+
+            // Get Announcement By ID
+            .addCase(getAnnouncementById.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.announcement = null;
+            })
+            .addCase(getAnnouncementById.fulfilled, (state, action: PayloadAction<Announcement>) => {
+                state.loading = false;
+                state.announcement = action.payload;
+            })
+            .addCase(getAnnouncementById.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string || 'Something went wrong';
+                state.announcement = null;
+            })
+            // Update Announcement
+            .addCase(updateAnnouncement.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.success = false;
+            })
+            .addCase(updateAnnouncement.fulfilled, (state, action: PayloadAction<Announcement>) => {
+                state.loading = false;
+                state.success = true;
+
+            })
+            .addCase(updateAnnouncement.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string || 'Something went wrong';
+            })
+
 
     },
 });
