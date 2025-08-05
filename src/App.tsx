@@ -9,7 +9,7 @@ import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
 import CreateCourseForm from "./pages/courseManagement/createCourse/CreateCourseForm";
 import CourseList from "./pages/courseManagement/courseList/CourseList";
-import ProtectedLayout from "./layout/ProtectedLayout";
+// import ProtectedLayout from "./layout/ProtectedLayout";
 import { useEffect } from "react";
 import Course from "./pages/courseManagement/courseDetail/Course";
 import CourseEdit from "./pages/courseManagement/courseEdit/CourseEdit";
@@ -20,6 +20,8 @@ import UploadMedia from "./pages/media/uploadMedia/UploadMedia";
 import Classes from "./pages/classes/classes/Classes";
 import CreateClass from "./pages/classes/createClasses/CreateClass";
 import EditClass from "./pages/classes/editClasses/EditClass";
+import CreateAnnouncements from "./pages/announcements/createannouncements/CreateAnnouncements";
+import Announcements from "./pages/announcements/announcements/Announcements";
 
 export default function App() {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
@@ -57,6 +59,8 @@ export default function App() {
              <Route path="/live-classes/calendar" element={<Classes/>}/>
              <Route path="/live-classes/create" element={<CreateClass/>}/>
              <Route path="/live-classes/edit/:id" element={<EditClass/>}/>
+             <Route path="/announcements/create" element={<CreateAnnouncements/>}/>
+             <Route path="/announcements" element={<Announcements/>}/>
           </Route>
 
         {/* Fallback Route */}

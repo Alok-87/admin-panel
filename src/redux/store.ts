@@ -4,6 +4,8 @@ import courseReducer from './slices/course'
 import admissionReducer from './slices/admission'
 import cloudinaryReducer from './slices/cloudinary'
 import classReducer from './slices/liveClass'
+import mediaReducer from './slices/media'
+import announcementReducer from './slices/announcement'
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +13,9 @@ export const store = configureStore({
     course :courseReducer,
     admission:admissionReducer,
     cloudinary:cloudinaryReducer,
-    class:classReducer
+    class:classReducer,
+    media :mediaReducer,
+    announcement : announcementReducer,
   },
 })
 

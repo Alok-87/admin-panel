@@ -1,6 +1,5 @@
 // CreateCourseForm.tsx
 import { useFormik } from 'formik';
-import { useState } from 'react';
 import BasicInfoSection from './components/BasicInfoSection';
 import KeyMetricsSection from './components/KeyMetricsSection';
 import MediaSection from './components/MediaSection';
@@ -14,7 +13,7 @@ import TestimonialsSection from './components/TestimonialsSection';
 import CTASection from './components/CTASection';
 import SEOSection from './components/SEOSection';
 import { CourseFormValues } from './types';
-import { courseValidationSchema } from './validationSchema';
+// import { courseValidationSchema } from './validationSchema';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../redux/store';
 import { createCourse } from '../../../redux/slices/course';

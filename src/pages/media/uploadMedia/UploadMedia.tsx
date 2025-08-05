@@ -1,124 +1,174 @@
-import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../redux/store';
+import { uploadImage } from '../../../redux/slices/cloudinary';
+import { useEffect } from 'react';
+import { uploadMedia } from '../../../redux/slices/media';
+import { MediaFormValues } from './types'; // Adjust path as needed
 
-// Example action (replace with your own)
-// import { uploadMedia } from '../../redux/slices/media';
-
-const validationSchema = Yup.object().shape({
-  title: Yup.string().required('Title is required'),
-  url: Yup.string().url('Invalid URL').required('URL is required'),
-  type: Yup.string().oneOf(['image', 'video', 'pdf', 'document']).required('Type is required'),
-  publicId: Yup.string(),
-  course: Yup.string().nullable(),
-  isFeatured: Yup.boolean(),
-  uploadedBy: Yup.string().required('Uploader is required'),
-  tags: Yup.array().of(Yup.string()),
-});
-
-interface MediaFormValues {
-  title: string;
-  url: string;
-  type: 'image' | 'video' | 'pdf' | 'document';
-  publicId?: string;
-  course?: string;
-  isFeatured: boolean;
-  uploadedBy: string;
-  tags: string[];
-}
-
-const UploadMedia: React.FC = () => {
+const MediaUpload = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
+  const { url, uploading, error } = useSelector((state: RootState) => state.cloudinary);
 
-  const initialValues: MediaFormValues = {
-    title: '',
-    url: '',
-    type: 'image',
-    publicId: '',
-    course: '',
-    isFeatured: false,
-    uploadedBy: '',
-    tags: [],
+  const formik = useFormik<MediaFormValues>({
+    initialValues: {
+      title: '',
+      url: '',
+      type: '',
+      isFeatured: false,
+      tags: [],
+    },
+    validationSchema: Yup.object({
+      title: Yup.string().required('Title is required'),
+      url: Yup.string().required('Image URL is required'),
+      type: Yup.string()
+        .oneOf(['image', 'video', 'pdf', 'document'], 'Invalid media type')
+        .required('Type is required'),
+      isFeatured: Yup.boolean(),
+      tags: Yup.array().of(Yup.string()),
+    }),
+    onSubmit: async (values, { setSubmitting }) => {
+      try {
+        dispatch(uploadMedia(values));
+      } finally {
+        setSubmitting(false);
+      }
+    },
+  });
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      dispatch(uploadImage(file));
+    }
   };
 
-  const handleSubmit = async (values: MediaFormValues) => {
-    // const resultAction = await dispatch(uploadMedia(values));
-    // if (uploadMedia.fulfilled.match(resultAction)) {
-    //   navigate('/media');
-    // }
-  };
+useEffect(() => {
+  if (url && formik.values.url !== url) {
+    formik.setFieldValue('url', url);
+  }
+}, [url]); // ✅ Also add `formik` if TypeScript complains
+
 
   return (
-    <div className="flex flex-col items-center justify-center w-full max-w-xl mx-auto p-6">
-      <h2 className="text-xl font-bold mb-4">Upload Media</h2>
-
-      <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
-        {({ values, setFieldValue }) => (
-          <Form className="w-full space-y-4">
-            <div>
-              <label className="block mb-1">Title</label>
-              <Field name="title" className="w-full p-2 border rounded" placeholder="Media title" />
-              <ErrorMessage name="title" component="div" className="text-red-500 text-sm" />
-            </div>
-
-            <div>
-              <label className="block mb-1">URL</label>
-              <Field name="url" className="w-full p-2 border rounded" placeholder="https://..." />
-              <ErrorMessage name="url" component="div" className="text-red-500 text-sm" />
-            </div>
-
-            <div>
-              <label className="block mb-1">Type</label>
-              <Field as="select" name="type" className="w-full p-2 border rounded">
-                <option value="image">Image</option>
-                <option value="video">Video</option>
-                <option value="pdf">PDF</option>
-                <option value="document">Document</option>
-              </Field>
-              <ErrorMessage name="type" component="div" className="text-red-500 text-sm" />
-            </div>
-
-            <div>
-              <label className="block mb-1">Public ID</label>
-              <Field name="publicId" className="w-full p-2 border rounded" placeholder="cloudinary_public_id" />
-              <ErrorMessage name="publicId" component="div" className="text-red-500 text-sm" />
-            </div>
-
-            <div>
-              <label className="block mb-1">Course (optional)</label>
-              <Field name="course" className="w-full p-2 border rounded" placeholder="Course ID" />
-              <ErrorMessage name="course" component="div" className="text-red-500 text-sm" />
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <Field type="checkbox" name="isFeatured" />
-              <label>Feature this media</label>
-            </div>
-
-
-            <div>
-              <label className="block mb-1">Tags (comma separated)</label>
-              <input
-                type="text"
-                className="w-full p-2 border rounded"
-                value={values.tags.join(',')}
-                onChange={(e) => setFieldValue('tags', e.target.value.split(',').map((tag) => tag.trim()))}
-              />
-              <ErrorMessage name="tags" component="div" className="text-red-500 text-sm" />
-            </div>
-
-            <button type="submit" className="w-full py-2 text-white bg-blue-600 hover:bg-blue-700 rounded">
-              Upload Media
-            </button>
-          </Form>
+    <form onSubmit={formik.handleSubmit} className="space-y-4 bg-white px-4 py-5 rounded-xl">
+      {/* Title */}
+      <div>
+        <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+          Title*
+        </label>
+        <input
+          id="title"
+          name="title"
+          type="text"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.title}
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        {formik.touched.title && formik.errors.title && (
+          <div className="text-red-500 text-xs mt-1">{formik.errors.title}</div>
         )}
-      </Formik>
-    </div>
+      </div>
+
+      {/* Image Upload */}
+      <div>
+        <label htmlFor="url" className="block text-sm font-medium text-gray-700">
+          Image
+        </label>
+        <input
+          id="url"
+          name="url"
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        {uploading && <p className="text-sm text-gray-500">Uploading...</p>}
+        {url && <img src={url} alt="Preview" className="mt-2 h-20 object-contain" />}
+        {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
+        {formik.touched.url && formik.errors.url && (
+          <div className="text-red-500 text-xs mt-1">{formik.errors.url}</div>
+        )}
+      </div>
+
+      {/* Type */}
+      <div>
+        <label htmlFor="type" className="block text-sm font-medium text-gray-700">
+          Media Type*
+        </label>
+        <select
+          id="type"
+          name="type"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.type}
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="image">Image</option>
+          <option value="video">Video</option>
+          <option value="pdf">PDF</option>
+          <option value="document">Document</option>
+        </select>
+        {formik.touched.type && formik.errors.type && (
+          <div className="text-red-500 text-xs mt-1">{formik.errors.type}</div>
+        )}
+      </div>
+
+      {/* Featured */}
+      <div className="flex items-center">
+        <input
+          id="isFeatured"
+          name="isFeatured"
+          type="checkbox"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          checked={formik.values.isFeatured}
+          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+        />
+        <label htmlFor="isFeatured" className="ml-2 block text-sm text-gray-700">
+          Featured Media
+        </label>
+      </div>
+
+      {/* Tags */}
+      <div>
+        <label htmlFor="tags" className="block text-sm font-medium text-gray-700">
+          Tags (comma separated)
+        </label>
+        <input
+          id="tags"
+          name="tags"
+          type="text"
+          onChange={(e) => {
+            const tagArray = e.target.value
+              .split(',')
+              .map((tag) => tag.trim())
+              .filter(Boolean);
+            formik.setFieldValue('tags', tagArray);
+          }}
+          onBlur={formik.handleBlur}
+          value={formik.values.tags.join(', ')}
+          placeholder="e.g., marketing, tutorial"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      {/* Submit */}
+      <div>
+        <button
+          type="submit"
+          disabled={formik.isSubmitting}
+          className="px-6 py-3 bg-brand-500 hover:bg-brand-600 text-white rounded-md transition-colors"
+        >
+          {formik.isSubmitting ? 'Uploading...' : 'Upload Media'}
+        </button>
+      </div>
+    </form>
   );
 };
 
-export default UploadMedia;
+export default MediaUpload;
+
+

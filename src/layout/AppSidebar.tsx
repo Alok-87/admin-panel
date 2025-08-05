@@ -3,17 +3,11 @@ import { Link, useLocation } from "react-router";
 
 // Assume these icons are imported from an icon library
 import {
-  BoxCubeIcon,
-  CalenderIcon,
+
   ChevronDownIcon,
   GridIcon,
   HorizontaLDots,
-  ListIcon,
-  PageIcon,
-  PieChartIcon,
-  PlugInIcon,
-  TableIcon,
-  UserCircleIcon,
+  
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
 import SidebarWidget from "./SidebarWidget";
@@ -50,6 +44,11 @@ const navItems: NavItem[] = [
     icon: <GridIcon />,
     name: "Live Classes",   
     subItems: [{ name: "Calendar View", path: "/live-classes/calendar", pro: false },{ name: "Schedule Class", path: "/live-classes/create", pro: false }],
+  },
+  {   
+    icon: <GridIcon />,
+    name: "Announcement Management",   
+    subItems: [{ name: "Announcements", path: "/announcements", pro: false },{ name: "Create Announcements", path: "/announcements/create", pro: false }],
   },
 
 
