@@ -1,6 +1,17 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axiosInstance from '../../utils/axiosInstance';
 
+
+
+
+export interface MediaPayload {
+  title: string;
+  file: File | null;
+  type: string;
+  isFeatured: boolean;
+  tags: string[];
+}
+
 // 1. Media State
 export interface MediaState {
   loading: boolean;
@@ -27,10 +38,11 @@ export const uploadMedia = createAsyncThunk(
       });
       return response.data;
     } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || 'Media upload failed');
+      return rejectWithValue(err.response?.data?.message || 'Upload failed');
     }
   }
 );
+
 
 // 4. Slice
 export const mediaSlice = createSlice({

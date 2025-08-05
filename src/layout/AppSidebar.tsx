@@ -49,11 +49,16 @@ const navItems: NavItem[] = [
     icon: <GridIcon />,
     name: "Announcement Management",   
     subItems: [{ name: "Announcements", path: "/announcements", pro: false },{ name: "Create Announcements", path: "/announcements/create", pro: false }],
-  },
+  }, 
+  {   
+    icon: <GridIcon />,
+    name: "Users & Roles",   
+    subItems: [{ name: "User List", path: "/admin/users", pro: false },{ name: "Create New User", path: "/admin/users/create", pro: false }],
+  }, 
 
 
   // {
-  //   icon: <CalenderIcon />,
+  //   icon: <CalenderIcon />,    
   //   name: "Calendar",
   //   path: "/calendar",
   // },

@@ -1,6 +1,6 @@
 export interface MediaFormValues {
   title: string;
-  url: string;
+  file: File | null;
   type: string;
   isFeatured: boolean;
   tags: string[];
