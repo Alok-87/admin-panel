@@ -6,9 +6,9 @@ import CollapsibleSection from './CollapsibleSection';
 const KeyMetricsSection = ({ formik }: { formik: FormikProps<CourseFormValues> }) => {
   return (
     <CollapsibleSection title="Key Metrics">
-      <div className="space-y-4">
+      <div className="space-y-4 dark:text-gray-300">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Success Rate (%)</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Success Rate (%)</label>
           <input
             type="number"
             name="successRate"
@@ -21,7 +21,7 @@ const KeyMetricsSection = ({ formik }: { formik: FormikProps<CourseFormValues> }
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Qualified Students</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Qualified Students</label>
           <input
             type="text"
             name="qualifiedCount"
@@ -29,10 +29,11 @@ const KeyMetricsSection = ({ formik }: { formik: FormikProps<CourseFormValues> }
             value={formik.values.qualifiedCount}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Qualified Students (e.g. 500+)"
+            autoComplete='off'
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Years of Excellence</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Years of Excellence</label>
           <input
             type="number"
             name="yearsOfExcellence"

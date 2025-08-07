@@ -50,7 +50,6 @@ export const gotme = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const response = await axiosInstance.get('/api/auth/me');
-            console.log("hello")
             return response.data.data; // { email, name, role }
         } catch (err: any) {
             return rejectWithValue(err.response?.data?.message || 'Fetch user failed');

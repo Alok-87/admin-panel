@@ -101,7 +101,7 @@ const CreateCourseForm = () => {
 
   return (
     <div className="max-w-7xl mx-auto sm:p-6  bg-white rounded-xl dark:bg-black ">
-      <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">Create New Course</h1>
+      <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-300 mb-6">Create New Course</h1>
 
       <form onSubmit={formik.handleSubmit} className="p-6 space-y-6">
         <BasicInfoSection formik={formik} />

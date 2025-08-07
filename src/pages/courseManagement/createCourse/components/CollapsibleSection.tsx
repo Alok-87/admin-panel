@@ -32,7 +32,7 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }: Collapsibl
       </button>
 
       {isOpen && (
-        <div className="p-4 space-y-2 bg-white dark:bg-gray-900">
+        <div className="p-4 space-y-2 bg-white  dark:bg-gray-900">
           {Array.isArray(children) ? (
             children.map((child, index) => (
               <div key={index} className="flex items-start gap-2">
@@ -41,7 +41,7 @@ const CollapsibleSection = ({ title, children, defaultOpen = false }: Collapsibl
               </div>
             ))
           ) : (
-            <div className="flex items-start gap-2 text-gray-700 dark:text-gray-200">
+            <div className="flex items-start gap-2 text-gray-700  dark:text-gray-200">
               <div className="flex-1">{children}</div>
             </div>
           )}

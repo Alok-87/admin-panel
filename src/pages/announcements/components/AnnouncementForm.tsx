@@ -1,12 +1,15 @@
-// AnnouncementForm.tsx
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import { AnnouncementFormValues } from '../type';
+import { FiEdit2, FiFileText } from 'react-icons/fi';
 
 interface AnnouncementFormProps {
   initialValues?: AnnouncementFormValues;
-  onSubmit: (values: AnnouncementFormValues, formikHelpers: FormikHelpers<AnnouncementFormValues>) => void;
+  onSubmit: (
+    values: AnnouncementFormValues,
+    formikHelpers: FormikHelpers<AnnouncementFormValues>
+  ) => void;
   isEditMode?: boolean;
 }
 
@@ -23,8 +26,8 @@ const AnnouncementForm: React.FC<AnnouncementFormProps> = ({
   });
 
   return (
-    <div className="max-w-6xl mx-auto bg-white p-6 rounded-xl shadow-md">
-      <h2 className="text-2xl font-bold mb-4">
+    <div className="max-w-6xl mx-auto bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+      <h2 className="text-2xl font-bold mb-4 dark:text-gray-200">
         {isEditMode ? 'Edit Announcement' : 'Create Announcement'}
       </h2>
 
@@ -34,30 +37,32 @@ const AnnouncementForm: React.FC<AnnouncementFormProps> = ({
         validationSchema={validationSchema}
       >
         {({ isSubmitting }) => (
-          <Form className="space-y-4">
+          <Form className="space-y-4 dark:text-gray-200">
             {/* Title */}
             <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-                Title
+              <label htmlFor="title" className="block text-sm font-medium mb-1 flex items-center gap-2">
+                <FiEdit2 /> Title
               </label>
               <Field
                 name="title"
                 type="text"
-                className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="Enter announcement title"
+                className="mt-1 block w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
               />
               <ErrorMessage name="title" component="div" className="text-red-500 text-sm mt-1" />
             </div>
 
             {/* Content */}
             <div>
-              <label htmlFor="content" className="block text-sm font-medium text-gray-700">
-                Content
+              <label htmlFor="content" className="block text-sm font-medium mb-1 flex items-center gap-2">
+                <FiFileText /> Content
               </label>
               <Field
                 name="content"
                 as="textarea"
                 rows={5}
-                className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="Write the announcement content here..."
+                className="mt-1 block w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
               />
               <ErrorMessage name="content" component="div" className="text-red-500 text-sm mt-1" />
             </div>

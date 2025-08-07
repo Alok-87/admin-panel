@@ -41,7 +41,7 @@ const MediaSection = ({ formik }: { formik: FormikProps<CourseFormValues> }) => 
 
   return (
     <CollapsibleSection title="Course Banner & Highlights">
-      <div className="space-y-6 text-sm text-gray-800 dark:text-gray-200">
+      <div className="space-y-6 text-sm text-gray-800 dark:text-gray-300">
         {/* Banner Image Upload */}
         <div>
           <label className="block font-medium mb-1 text-gray-700 dark:text-gray-300">
@@ -57,7 +57,7 @@ const MediaSection = ({ formik }: { formik: FormikProps<CourseFormValues> }) => 
                 type="file"
                 name="bannerImage"
                 onChange={handleImageChange}
-                className="hidden"
+                className="hidden "
                 accept="image/*"
               />
             </label>
@@ -81,7 +81,7 @@ const MediaSection = ({ formik }: { formik: FormikProps<CourseFormValues> }) => 
         </div>
 
         {/* Floating Highlights */}
-        <div>
+        <div >
           <label className="block font-medium mb-1 text-gray-700 dark:text-gray-300">
             Course Highlights
           </label>

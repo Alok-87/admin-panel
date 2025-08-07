@@ -39,7 +39,7 @@ export default function App() {
   }, []);
 
   if (loading) return null; // or return <LoadingSpinner />
-  
+
   return (
     <Router>
       <ScrollToTop />
@@ -55,27 +55,105 @@ export default function App() {
         />
 
         {/* Protected Routes */}
-        <Route element={<ProtectedRoute> <AppLayout /></ProtectedRoute>}>
+        <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
+          {/* Accessible to all authenticated users */}
           <Route index path="/" element={<Home />} />
-          <Route path="/course/add" element={<CreateCourseForm />} />
-          <Route path="/course/list" element={<CourseList />} />
-          <Route path="/course/:id" element={<Course />} />
-          <Route path="/editCourse/:id" element={<CourseEdit />} />
-          <Route path="/admission/inquiries" element={<Inquiries />} />
-          <Route path="/admission/manual-entry" element={<Manual_Entry />} />
-          <Route path="/allmedia" element={<AllMedia />} />
-          <Route path="/uploadmedia" element={<UploadMedia />} />
-          <Route path="/live-classes/calendar" element={<Classes />} />
-          <Route path="/live-classes/create" element={<CreateClass />} />
-          <Route path="/live-classes/edit/:id" element={<EditClass />} />
-          <Route path="/announcements/create" element={<CreateAnnouncements />} />
-          <Route path="/announcements" element={<Announcements />} />
-          <Route path="/announcements/edit/:id" element={<EditAnnouncements />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/admin/users" element={<UserList />} />
-          <Route path="/admin/users/create" element={<CreateUser />} />
-          <Route path="/admin/users/edit/:id" element={<EditUser />} />
+
+          {/* Only admin or instructor can add/edit courses */}
+          <Route
+            path="/course/add"
+            element={
+              <ProtectedRoute allowedRoles={["admin", "manager"]}>
+                <CreateCourseForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/editCourse/:id"
+            element={
+              <ProtectedRoute allowedRoles={["admin", "manager"]}>
+                <CourseEdit />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route path="/course/list"
+            element={
+              <ProtectedRoute allowedRoles={["admin", "manager"]}>
+                <CourseList />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route path="/course/:id" element={<ProtectedRoute allowedRoles={["admin", "manager"]}> <Course /> </ProtectedRoute>} />
+
+          {/* Admission module */}
+          <Route
+            path="/admission/inquiries"
+            element={
+              <ProtectedRoute allowedRoles={["admin", "manager"]}>
+                <Inquiries />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admission/manual-entry"
+            element={
+              <ProtectedRoute allowedRoles={["admin", "manager"]}>
+                <Manual_Entry />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Media */}
+          <Route path="/allmedia" element={<ProtectedRoute allowedRoles={["admin", "manager"]}><AllMedia /></ProtectedRoute>} />
+          <Route
+            path="/uploadmedia"
+            element={
+              <ProtectedRoute allowedRoles={["admin", "manager"]}>
+                <UploadMedia />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Live Classes */}
+          <Route path="/live-classes/calendar" element={ <ProtectedRoute allowedRoles={["admin", "manager"]}><Classes /></ProtectedRoute>} />
+          <Route path="/live-classes/create" element={<ProtectedRoute allowedRoles={["admin", "manager"]}><CreateClass /></ProtectedRoute>} />
+          <Route path="/live-classes/edit/:id" element={<ProtectedRoute allowedRoles={["admin", "manager"]}><EditClass /></ProtectedRoute>} />
+
+          {/* Announcements */}
+          <Route path="/announcements" element={<ProtectedRoute allowedRoles={["admin"]}><Announcements /></ProtectedRoute>} />
+          <Route path="/announcements/create" element={<ProtectedRoute allowedRoles={["admin"]}><CreateAnnouncements /></ProtectedRoute>} />
+          <Route path="/announcements/edit/:id" element={<ProtectedRoute allowedRoles={["admin"]}><EditAnnouncements /></ProtectedRoute>} />
+
+          {/* Admin-only user management */}
+          <Route
+            path="/admin/users"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <UserList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/users/create"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <CreateUser />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/users/edit/:id"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <EditUser />
+              </ProtectedRoute>
+            }
+          />
         </Route>
+
 
         {/* Fallback Route */}
         <Route path="*" element={<NotFound />} />

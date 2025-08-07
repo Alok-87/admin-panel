@@ -74,8 +74,8 @@ const UserList = () => {
                   className="border-t dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                 >
                   <td className="p-4">
-                    <div className="flex-shrink-0 h-10 w-10 flex items-center justify-center bg-brand-100 dark:bg-brand-800 rounded-full">
-                      <FaUser className="text-brand-500 dark:text-brand-300" />
+                    <div className="flex-shrink-0 h-10 w-10 flex items-center justify-center bg-brand-100 dark:bg-brand-500 rounded-full">
+                      <FaUser className="text-brand-500 dark:text-white" />
                     </div>
                   </td>
                   <td className="p-4 text-gray-800 dark:text-gray-100">{user.name}</td>
