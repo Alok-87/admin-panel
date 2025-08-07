@@ -6,6 +6,7 @@ import cloudinaryReducer from './slices/cloudinary'
 import classReducer from './slices/liveClass'
 import mediaReducer from './slices/media'
 import announcementReducer from './slices/announcement'
+import userReducer from './slices/users'
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     class:classReducer,
     media :mediaReducer,
     announcement : announcementReducer,
+    user:userReducer
   },
 })
 

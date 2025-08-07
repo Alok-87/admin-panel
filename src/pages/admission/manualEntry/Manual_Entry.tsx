@@ -15,8 +15,6 @@ import { createAdmissionInquiries } from '../../../redux/slices/admission';
 import { AdmissionFormValues } from './types';
 import { AdmissionStatus } from './types';
 
-
-
 const AdmissionForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -49,8 +47,8 @@ const AdmissionForm: React.FC = () => {
     icon: React.ElementType;
     text: string;
   }) => (
-    <label className="flex items-center gap-2 font-medium text-gray-700 mb-1">
-      <span className="p-1 rounded bg-brand-500 text-white">
+    <label className="flex items-center gap-2 font-medium text-gray-700 dark:text-gray-300 mb-1">
+      <span className="p-1 rounded bg-brand-500 text-white dark:bg-brand-600">
         <Icon size={14} />
       </span>
       {text}
@@ -58,8 +56,10 @@ const AdmissionForm: React.FC = () => {
   );
 
   return (
-    <div className="max-w-6xl mx-auto p-6 bg-white shadow-lg rounded-2xl space-y-6">
-      <h2 className="text-2xl font-semibold text-center text-brand-500">Admission Form</h2>
+    <div className="max-w-6xl mx-auto p-4 sm:p-6 bg-white dark:bg-gray-800 shadow-lg rounded-2xl space-y-6">
+      <h2 className="text-xl sm:text-2xl font-semibold text-center  dark:text-gray-200">
+        Admission Form
+      </h2>
       <form onSubmit={formik.handleSubmit} className="space-y-4">
 
         <div>
@@ -68,46 +68,48 @@ const AdmissionForm: React.FC = () => {
             type="text"
             name="name"
             placeholder="Full Name"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500"
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 dark:focus:ring-brand-400 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.name}
           />
           {formik.touched.name && formik.errors.name && (
-            <div className="text-red-500 text-sm">{formik.errors.name}</div>
+            <div className="text-red-500 dark:text-red-400 text-sm">{formik.errors.name}</div>
           )}
         </div>
 
-        <div>
-          <LabelWithIcon icon={MdPhone} text="Phone Number" />
-          <input
-            type="number"
-            name="phone"
-            placeholder="Phone Number"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.phone}
-          />
-          {formik.touched.phone && formik.errors.phone && (
-            <div className="text-red-500 text-sm">{formik.errors.phone}</div>
-          )}
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <LabelWithIcon icon={MdPhone} text="Phone Number" />
+            <input
+              type="number"
+              name="phone"
+              placeholder="Phone Number"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 dark:focus:ring-brand-400 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.phone || ''}
+            />
+            {formik.touched.phone && formik.errors.phone && (
+              <div className="text-red-500 dark:text-red-400 text-sm">{formik.errors.phone}</div>
+            )}
+          </div>
 
-        <div>
-          <LabelWithIcon icon={MdEmail} text="Email Address" />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email Address"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.email}
-          />
-          {formik.touched.email && formik.errors.email && (
-            <div className="text-red-500 text-sm">{formik.errors.email}</div>
-          )}
+          <div>
+            <LabelWithIcon icon={MdEmail} text="Email Address" />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 dark:focus:ring-brand-400 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.email}
+            />
+            {formik.touched.email && formik.errors.email && (
+              <div className="text-red-500 dark:text-red-400 text-sm">{formik.errors.email}</div>
+            )}
+          </div>
         </div>
 
         <div>
@@ -116,13 +118,13 @@ const AdmissionForm: React.FC = () => {
             type="text"
             name="courseInterest"
             placeholder="Interested Course"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500"
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 dark:focus:ring-brand-400 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.courseInterest}
           />
           {formik.touched.courseInterest && formik.errors.courseInterest && (
-            <div className="text-red-500 text-sm">{formik.errors.courseInterest}</div>
+            <div className="text-red-500 dark:text-red-400 text-sm">{formik.errors.courseInterest}</div>
           )}
         </div>
 
@@ -131,7 +133,8 @@ const AdmissionForm: React.FC = () => {
           <textarea
             name="message"
             placeholder="Message (Optional)"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500"
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 dark:focus:ring-brand-400 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
+            rows={4}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.message}
@@ -142,7 +145,7 @@ const AdmissionForm: React.FC = () => {
           <LabelWithIcon icon={MdPendingActions} text="Status" />
           <select
             name="status"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500"
+            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 dark:focus:ring-brand-400 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.status}
@@ -156,7 +159,7 @@ const AdmissionForm: React.FC = () => {
 
         <button
           type="submit"
-          className="w-full bg-brand-500 text-white py-2 rounded-md font-semibold hover:bg-brand-600 transition"
+          className="w-full bg-brand-500 hover:bg-brand-600 dark:bg-brand-600 dark:hover:bg-brand-700 text-white py-2 rounded-md font-semibold transition duration-200"
         >
           Submit
         </button>

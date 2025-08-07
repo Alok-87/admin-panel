@@ -15,7 +15,7 @@ const EnquiriesPage: React.FC = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4 text-brand-500">Admission Inquiries</h1>
+      <h1 className="text-2xl font-bold mb-4 ">Admission Inquiries</h1>
 
       {loading && <p>Loading inquiries...</p>}
       {error && <p className="text-red-500">Error: {error}</p>}

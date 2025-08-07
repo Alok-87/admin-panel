@@ -182,11 +182,28 @@ import { MediaFormValues } from './types'; // Adjust path as needed
 const MediaUpload = () => {
   const dispatch = useDispatch<AppDispatch>();
 
+  const handleTagChange = (index: number, value: string) => {
+    const newTags = [...formik.values.tags];
+    newTags[index] = value;
+    formik.setFieldValue('tags', newTags);
+  };
+
+  const addTag = () => {
+    formik.setFieldValue('tags', [...formik.values.tags, '']);
+  };
+
+  const removeTag = (index: number) => {
+    const newTags = [...formik.values.tags];
+    newTags.splice(index, 1);
+    formik.setFieldValue('tags', newTags);
+  };
+
+
   const formik = useFormik<MediaFormValues>({
     initialValues: {
       title: '',
       file: null,
-      type: '',
+      type: 'image',
       isFeatured: false,
       tags: [],
     },
@@ -201,14 +218,8 @@ const MediaUpload = () => {
     }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const formData = new FormData();
-        formData.append('title', values.title);
-        if (values.file) formData.append('file', values.file);
-        formData.append('type', values.type);
-        formData.append('isFeatured', values.isFeatured.toString());
-        values.tags.forEach(tag => formData.append('tags[]', tag)); // Or just 'tags' if backend expects it
 
-        await dispatch(uploadMedia(formData) as any); // Ensure `uploadMedia` accepts FormData
+        await dispatch(uploadMedia(values)); // Ensure `uploadMedia` accepts FormData
       } finally {
         setSubmitting(false);
       }
@@ -218,10 +229,16 @@ const MediaUpload = () => {
 
 
   return (
-    <form onSubmit={formik.handleSubmit} className="space-y-4 bg-white px-4 py-5 rounded-xl">
+    <form
+      onSubmit={formik.handleSubmit}
+      className="space-y-4 bg-white dark:bg-gray-800 px-4 py-5 rounded-xl shadow-sm"
+    >
+      <h1 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white">
+        Upload Media 
+      </h1>
       {/* Title */}
       <div>
-        <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
           Title*
         </label>
         <input
@@ -231,16 +248,16 @@ const MediaUpload = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.title}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:bg-gray-700 dark:text-white"
         />
         {formik.touched.title && formik.errors.title && (
-          <div className="text-red-500 text-xs mt-1">{formik.errors.title}</div>
+          <div className="text-red-500 dark:text-red-400 text-xs mt-1">{formik.errors.title}</div>
         )}
       </div>
 
       {/* Image Upload */}
       <div>
-        <label htmlFor="file" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="file" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
           Image
         </label>
         <input
@@ -252,17 +269,16 @@ const MediaUpload = () => {
             const file = event.currentTarget.files?.[0] || null;
             formik.setFieldValue("file", file);
           }}
-          className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-gray-600 dark:file:text-gray-200"
         />
         {formik.touched.file && formik.errors.file && (
-          <div className="text-red-500 text-xs mt-1">{formik.errors.file}</div>
+          <div className="text-red-500 dark:text-red-400 text-xs mt-1">{formik.errors.file}</div>
         )}
-
       </div>
 
       {/* Type */}
       <div>
-        <label htmlFor="type" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="type" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
           Media Type*
         </label>
         <select
@@ -271,7 +287,7 @@ const MediaUpload = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.type}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:bg-gray-700 dark:text-white"
         >
           <option value="image">Image</option>
           <option value="video">Video</option>
@@ -279,7 +295,7 @@ const MediaUpload = () => {
           <option value="document">Document</option>
         </select>
         {formik.touched.type && formik.errors.type && (
-          <div className="text-red-500 text-xs mt-1">{formik.errors.type}</div>
+          <div className="text-red-500 dark:text-red-400 text-xs mt-1">{formik.errors.type}</div>
         )}
       </div>
 
@@ -292,34 +308,70 @@ const MediaUpload = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           checked={formik.values.isFeatured}
-          className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+          className="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-400 dark:bg-gray-700 dark:checked:bg-indigo-500"
         />
-        <label htmlFor="isFeatured" className="ml-2 block text-sm text-gray-700">
+        <label htmlFor="isFeatured" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
           Featured Media
         </label>
       </div>
 
       {/* Tags */}
       <div>
-        <label htmlFor="tags" className="block text-sm font-medium text-gray-700">
-          Tags (comma separated)
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Tags
         </label>
-        <input
-          id="tags"
-          name="tags"
-          type="text"
-          onChange={(e) => {
-            const tagArray = e.target.value
-              .split(',')
-              .map((tag) => tag.trim())
-              .filter(Boolean);
-            formik.setFieldValue('tags', tagArray);
-          }}
-          onBlur={formik.handleBlur}
-          value={formik.values.tags.join(', ')}
-          placeholder="e.g., marketing, tutorial"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+        <div className="space-y-2">
+          {formik.values.tags.map((tag, index) => (
+            <div key={index} className="flex items-center gap-2">
+              <input
+                type="text"
+                value={tag}
+                onChange={(e) => handleTagChange(index, e.target.value)}
+                className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:bg-gray-700 dark:text-white"
+                placeholder={`Tag ${index + 1}`}
+              />
+              {formik.values.tags.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => removeTag(index)}
+                  className="p-2 text-red-500 hover:text-red-700 dark:hover:text-red-400"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+              )}
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={addTag}
+            className="flex items-center text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 mt-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4 mr-1"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                clipRule="evenodd"
+              />
+            </svg>
+            Add another tag
+          </button>
+        </div>
       </div>
 
       {/* Submit */}
@@ -327,12 +379,21 @@ const MediaUpload = () => {
         <button
           type="submit"
           disabled={formik.isSubmitting}
-          className="px-6 py-3 bg-brand-500 hover:bg-brand-600 text-white rounded-md transition-colors"
+          className="px-6 py-3 bg-brand-500 hover:bg-brand-600 dark:bg-brand-600 dark:hover:bg-brand-700 text-white rounded-md transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
         >
-          {formik.isSubmitting ? 'Uploading...' : 'Upload Media'}
+          {formik.isSubmitting ? (
+            <span className="flex items-center justify-center">
+              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Uploading...
+            </span>
+          ) : 'Upload Media'}
         </button>
       </div>
     </form>
+
   );
 };
 

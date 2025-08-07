@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { ChevronLeftIcon,EyeCloseIcon, EyeIcon } from '../../icons';
+import { EyeCloseIcon, EyeIcon } from '../../icons';
 import { AppDispatch, RootState } from '../../redux/store';
 import { login } from '../../redux/slices/auth';
 import {Link, useNavigate} from "react-router-dom"
@@ -27,15 +27,6 @@ const SignInForm: React.FC = () => {
 
   return (
     <div className="flex flex-col flex-1">
-      <div className="w-full max-w-md pt-10 mx-auto">
-        <Link
-          to="/"
-          className="inline-flex items-center text-sm text-gray-500 dark:text-gray-400 dark:hover:text-gray-300 transition-colors hover:text-gray-700"
-        >
-          <ChevronLeftIcon className="size-5" />
-          Back to dashboard
-        </Link>
-      </div>
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
         <div>
           <h1 className="mb-2 font-semibold text-gray-800 dark:text-white/90  text-title-sm">Sign In</h1>

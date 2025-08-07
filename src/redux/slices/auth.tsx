@@ -25,11 +25,11 @@ export interface AuthState {
 const initialState: AuthState = {
     email: '',
     password: '',
-    loading: false,
+    loading: true,
     error: null,
     token: null,
     user: null,
-    isLogin:false
+    isLogin: false
 };
 
 export const login = createAsyncThunk(
@@ -106,13 +106,14 @@ export const authSlice = createSlice({
                 state.error = null;
             })
             .addCase(gotme.fulfilled, (state, action: PayloadAction<User>) => {
-                state.loading = false;
                 state.user = action.payload;
-                state.isLogin = true;
+                state.isLogin = true; // ✅ This is required
+                state.loading = false;
             })
             .addCase(gotme.rejected, (state, action: PayloadAction<any>) => {
+                state.isLogin = false;
+                state.user = null;
                 state.loading = false;
-                state.error = action.payload;
             })
             .addCase(logoutUser.pending, (state) => {
                 state.loading = true;

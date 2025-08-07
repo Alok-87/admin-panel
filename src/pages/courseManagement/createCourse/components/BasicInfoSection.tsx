@@ -10,7 +10,7 @@ const BasicInfoSection = ({ formik }: { formik: FormikProps<CourseFormValues> })
 
 
   return (
-    <CollapsibleSection title="Basic Course Info">
+    <CollapsibleSection title="Basic Course Info"  defaultOpen={true}>
       <div className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Course Title*</label>

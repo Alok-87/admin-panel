@@ -5,7 +5,7 @@ export type ClassesFormValues = {
   instructor: string;
   date: string; // ISO date string
   time: string; // HH:mm
-  mode: 'online' | 'offline';
+  mode: 'online' | 'offline' | 'hybrid';
   link: string;
   isCancelled: boolean;
 };

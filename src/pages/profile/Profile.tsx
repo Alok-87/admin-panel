@@ -1,19 +1,19 @@
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import { Pencil } from 'lucide-react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../../redux/store';
-import { gotme } from '../../redux/slices/auth';
+import {  useSelector } from 'react-redux';
+// import { AppDispatch } from '../../redux/store';
+// import { gotme } from '../../redux/slices/auth';
 import { RootState } from '../../redux/store';
 
 
 const Profile = () => {
 
-    const dispatch = useDispatch<AppDispatch>();
+    // const dispatch = useDispatch<AppDispatch>();
       const {user } = useSelector((state: RootState) => state.auth);
 
-    useEffect(() => {
-        dispatch(gotme());
-    }, []);
+    // useEffect(() => {
+    //     dispatch(gotme());
+    // }, []);
 
     return (
         <div className="max-w-6xl mx-auto p-4 space-y-6">

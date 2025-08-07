@@ -10,7 +10,9 @@ import {
   
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
-import SidebarWidget from "./SidebarWidget";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+
 
 type NavItem = {
   name: string;
@@ -18,6 +20,8 @@ type NavItem = {
   path?: string;
   subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
 };
+
+
 
 const navItems: NavItem[] = [
   {
@@ -27,7 +31,7 @@ const navItems: NavItem[] = [
   },
   {
     icon: <GridIcon />,
-    name: "Course Management",
+    name: "Courses",
     subItems: [{ name: "Add Course", path: "/course/add", pro: false },{ name: "All Course", path: "/course/list", pro: false }],
   },
   {
@@ -47,7 +51,7 @@ const navItems: NavItem[] = [
   },
   {   
     icon: <GridIcon />,
-    name: "Announcement Management",   
+    name: "Announcement",   
     subItems: [{ name: "Announcements", path: "/announcements", pro: false },{ name: "Create Announcements", path: "/announcements/create", pro: false }],
   }, 
   {   
@@ -121,6 +125,8 @@ const othersItems: NavItem[] = [
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const location = useLocation();
+
+  const {user} = useSelector((state : RootState) => state.auth)
 
   const [openSubmenu, setOpenSubmenu] = useState<{
     type: "main" | "others";
@@ -385,7 +391,7 @@ const AppSidebar: React.FC = () => {
                 }`}
               >
                 {isExpanded || isHovered || isMobileOpen ? (
-                  "Others"
+                  ""
                 ) : (
                   <HorizontaLDots />
                 )}
@@ -394,7 +400,7 @@ const AppSidebar: React.FC = () => {
             </div>
           </div>
         </nav>
-        {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}
+        {isExpanded || isHovered || isMobileOpen ? <></> : null}
       </div>
     </aside>
   );

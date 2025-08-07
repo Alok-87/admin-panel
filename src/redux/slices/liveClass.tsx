@@ -18,7 +18,7 @@ export interface ClassItem {
   instructor: string | null;
   date: string;
   time: string;
-  mode: 'online' | 'offline';
+  mode: 'online' | 'offline' | 'hybrid';
   link: string;
   isCancelled: boolean;
   createdAt: string;
@@ -30,7 +30,7 @@ export interface ClassPayload {
   instructor: string;
   date: string;
   time: string;
-  mode: 'online' | 'offline';
+  mode: 'online' | 'offline' | 'hybrid';
   link: string;
   isCancelled: boolean;
 }

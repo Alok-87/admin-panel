@@ -25,18 +25,21 @@ import Announcements from "./pages/announcements/announcements/Announcements";
 import EditAnnouncements from "./pages/announcements/editannouncements/EditAnnouncements";
 import Profile from "./pages/profile/Profile";
 import { gotme } from "./redux/slices/auth";
-import ProtectedRoute from "./components/common/ProtectedRoute"; 
+import ProtectedRoute from "./components/common/ProtectedRoute";
 import CreateUser from "./pages/users&roles/createUser/CreateUser";
-import UserList from "./pages/users&roles/UserList";
+import UserList from "./pages/users&roles/userList/UserList";
+import EditUser from "./pages/users&roles/editUser/EditUser";
 
 export default function App() {
-  const isLogin = useSelector((state: RootState) => state.auth.isLogin);
+  const { isLogin, loading } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     dispatch(gotme())
   }, []);
 
+  if (loading) return null; // or return <LoadingSpinner />
+  
   return (
     <Router>
       <ScrollToTop />
@@ -70,7 +73,8 @@ export default function App() {
           <Route path="/announcements/edit/:id" element={<EditAnnouncements />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/admin/users" element={<UserList />} />
-          <Route path="/admin/users/create" element={<CreateUser/>} />
+          <Route path="/admin/users/create" element={<CreateUser />} />
+          <Route path="/admin/users/edit/:id" element={<EditUser />} />
         </Route>
 
         {/* Fallback Route */}

@@ -11,7 +11,7 @@ const ProgramsSection = ({ formik }: { formik: FormikProps<CourseFormValues> }) 
         mode: 'online',
         title: '',
         description: '',
-        price: '',
+        price: 0,
         priceLabel: '',
         features: ['', '']
       }
@@ -106,6 +106,7 @@ const ProgramsSection = ({ formik }: { formik: FormikProps<CourseFormValues> }) 
                 >
                   <option value="online">online</option>
                   <option value="offline">offline</option>
+                  <option value="hybrid">hybrid</option>
                 </select>
               </div>
 
@@ -152,11 +153,10 @@ const ProgramsSection = ({ formik }: { formik: FormikProps<CourseFormValues> }) 
                       type="number"
                       value={program.price}
                       onChange={(e) =>
-                        handleProgramChange(programIndex, 'price', Number(e.target.value))
+                        handleProgramChange(programIndex, 'price', e.target.value) // store as string
                       }
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder="0"
-                      min="0"
                     />
 
                   </div>

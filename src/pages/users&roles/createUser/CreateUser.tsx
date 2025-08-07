@@ -1,9 +1,30 @@
-import React from 'react'
+// CreateUserForm.tsx
+import { useDispatch } from 'react-redux';
+import UserForm from '../components/UserFrom';
+import { UserFormValues } from '../type';
+import { AppDispatch } from '../../../redux/store';
+import { createUser } from '../../../redux/slices/users';
+import { useNavigate } from 'react-router';
+
+const defaultValues: UserFormValues = {
+  name: '',
+  email: '',
+  password: '',
+  role: 'telecaller',
+};
 
 const CreateUser = () => {
-  return (
-    <div>CreateUser</div>
-  )
-}
+  const dispatch = useDispatch<AppDispatch>()
+  const navigate = useNavigate();
+  const handleCreate = async (values: UserFormValues) => {
+    const resultAction = await dispatch(createUser(values));
+    if (createUser.fulfilled.match(resultAction)) {
+      navigate("/admin/users")
+    }
+  };
 
-export default CreateUser
+
+  return <UserForm initialValues={defaultValues} isEditMode={false} onSubmit={handleCreate} />;
+};
+
+export default CreateUser;
