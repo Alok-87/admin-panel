@@ -57,7 +57,7 @@ const UserList = () => {
       {!loading && !error && (
         <div className="w-full overflow-x-auto border rounded-lg dark:border-gray-700">
           <table className="min-w-full text-left border-collapse">
-            <thead className="bg-gray-100 dark:bg-gray-800">
+            <thead className="bg-gray-100 dark:bg-gray-700">
               <tr className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 <th className="p-4 whitespace-nowrap">User</th>
                 <th className="p-4 whitespace-nowrap">Name</th>
@@ -71,7 +71,7 @@ const UserList = () => {
               {users.map((user) => (
                 <tr
                   key={user._id}
-                  className="border-t dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                  className="border-t dark:border-gray-700 bg-white  dark:bg-gray-800 transition-colors"
                 >
                   <td className="p-4">
                     <div className="flex-shrink-0 h-10 w-10 flex items-center justify-center bg-brand-100 dark:bg-brand-500 rounded-full">

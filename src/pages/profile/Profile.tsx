@@ -21,7 +21,7 @@ const Profile = () => {
             <div className="bg-white shadow rounded-lg p-6">
                 <div className="flex items-center gap-4">
                     <img
-                        src="https://randomuser.me/api/portraits/men/32.jpg"
+                        src="/images/user/user.png"
                         alt="Profile"
                         className="w-20 h-20 rounded-full object-cover"
                     />

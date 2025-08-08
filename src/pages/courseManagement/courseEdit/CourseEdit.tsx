@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import CourseEditForm from './components/CourseEditFrom';
 import { CourseFormValues } from '../createCourse/types';
 import { getCourseById, updateCourse } from '../../../redux/slices/course';
-import { useDispatch,useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../../../redux/store';
 import { RootState } from '../../../redux/store';
 
@@ -13,24 +13,29 @@ const CourseEdit = () => {
   const { id } = useParams();
   const [initialData, setInitialData] = useState<CourseFormValues | null>(null);
 
-    const { course, loading, error } = useSelector((state: RootState) => state.course);
-    useEffect(() => {
-  if (course) {
-    setInitialData(course);
-  }
-}, [course]);
+  const { course, loading, } = useSelector((state: RootState) => state.course);
+  useEffect(() => {
+    if (course) {
+      setInitialData(course);
+    }
+  }, [course]);
 
 
-    const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>();
 
-   useEffect(() => {
-      if (id && typeof id === 'string') {
-        dispatch(getCourseById(id));
-      }
-    }, [id, dispatch]);
+  useEffect(() => {
+    if (id && typeof id === 'string') {
+      dispatch(getCourseById(id));
+    }
+  }, [id, dispatch]);
 
+
+  const navigate = useNavigate();
   const handleUpdate = async (values: CourseFormValues) => {
-   dispatch( updateCourse({ id: id as string, courseData: values }))
+    const result = await dispatch(updateCourse({ id: id as string, courseData: values }));
+    if (updateCourse.fulfilled.match(result)) {
+      navigate("/course/list")
+    }
   };
 
   if (loading) return <p>Loading...</p>;

@@ -63,9 +63,9 @@ const ProgramsSection = ({ formik }: { formik: FormikProps<CourseFormValues> }) 
     <CollapsibleSection title="Program Modes">
       <div className="space-y-6">
         {formik.values.programs.map((program, programIndex) => (
-          <div key={programIndex} className="border rounded-lg p-4 bg-gray-50">
+          <div key={programIndex} className="border rounded-lg p-4 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="font-medium text-gray-700">
+              <h3 className="font-medium text-gray-700 dark:text-gray-200">
                 Program {programIndex + 1}
               </h3>
               {formik.values.programs.length > 1 && (
@@ -74,6 +74,7 @@ const ProgramsSection = ({ formik }: { formik: FormikProps<CourseFormValues> }) 
                   onClick={() => removeProgram(programIndex)}
                   className="text-red-500 hover:text-red-700 text-sm flex items-center"
                 >
+                  {/* Delete Icon */}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-4 w-4 mr-1"
@@ -94,84 +95,71 @@ const ProgramsSection = ({ formik }: { formik: FormikProps<CourseFormValues> }) 
             <div className="space-y-4">
               {/* Mode */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Mode
                 </label>
                 <select
                   value={program.mode}
-                  onChange={(e) =>
-                    handleProgramChange(programIndex, 'mode', e.target.value)
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  onChange={(e) => handleProgramChange(programIndex, 'mode', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="online">online</option>
-                  <option value="offline">offline</option>
-                  <option value="hybrid">hybrid</option>
+                  <option value="online">Online</option>
+                  <option value="offline">Offline</option>
+                  <option value="hybrid">Hybrid</option>
                 </select>
               </div>
 
               {/* Title */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Program Title
                 </label>
                 <input
                   type="text"
                   value={program.title}
-                  onChange={(e) =>
-                    handleProgramChange(programIndex, 'title', e.target.value)
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  onChange={(e) => handleProgramChange(programIndex, 'title', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="e.g., JEE Advanced Crash Course"
                 />
               </div>
 
               {/* Description */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Description
                 </label>
                 <textarea
                   value={program.description}
-                  onChange={(e) =>
-                    handleProgramChange(programIndex, 'description', e.target.value)
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  onChange={(e) => handleProgramChange(programIndex, 'description', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Short description about the program"
                   rows={3}
                 />
               </div>
 
-              {/* Price */}
+              {/* Price & Price Label */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Price
                   </label>
-                  <div className="relative">
-                    <input
-                      type="number"
-                      value={program.price}
-                      onChange={(e) =>
-                        handleProgramChange(programIndex, 'price', e.target.value) // store as string
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="0"
-                    />
-
-                  </div>
+                  <input
+                    type="number"
+                    value={program.price}
+                    onChange={(e) => handleProgramChange(programIndex, 'price', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="0"
+                  />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Price Label
                   </label>
                   <input
                     type="text"
                     value={program.priceLabel}
-                    onChange={(e) =>
-                      handleProgramChange(programIndex, 'priceLabel', e.target.value)
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    onChange={(e) => handleProgramChange(programIndex, 'priceLabel', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="e.g., per year"
                   />
                 </div>
@@ -179,7 +167,7 @@ const ProgramsSection = ({ formik }: { formik: FormikProps<CourseFormValues> }) 
 
               {/* Features */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Features
                 </label>
                 <div className="space-y-2">
@@ -191,7 +179,7 @@ const ProgramsSection = ({ formik }: { formik: FormikProps<CourseFormValues> }) 
                         onChange={(e) =>
                           handleFeatureChange(programIndex, featureIndex, e.target.value)
                         }
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder={`Feature ${featureIndex + 1}`}
                       />
                       {program.features.length > 2 && (
@@ -244,7 +232,7 @@ const ProgramsSection = ({ formik }: { formik: FormikProps<CourseFormValues> }) 
         <button
           type="button"
           onClick={addProgram}
-          className="flex items-center justify-center w-full py-2 border-2 border-dashed border-gray-300 rounded-lg hover:border-gray-400 text-gray-600 hover:text-gray-800"
+          className="flex items-center justify-center w-full py-2 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg hover:border-gray-400 dark:hover:border-gray-500 text-gray-600 dark:text-gray-200 hover:text-gray-800 dark:hover:text-white"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -262,6 +250,7 @@ const ProgramsSection = ({ formik }: { formik: FormikProps<CourseFormValues> }) 
         </button>
       </div>
     </CollapsibleSection>
+
   );
 };
 

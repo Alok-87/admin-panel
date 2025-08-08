@@ -47,7 +47,7 @@ const AnnouncementForm: React.FC<AnnouncementFormProps> = ({
                 name="title"
                 type="text"
                 placeholder="Enter announcement title"
-                className="mt-1 block w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+                className="mt-1 block w-full border border-gray-300 dark:border-gray-600 outline-none dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
               />
               <ErrorMessage name="title" component="div" className="text-red-500 text-sm mt-1" />
             </div>
@@ -62,7 +62,7 @@ const AnnouncementForm: React.FC<AnnouncementFormProps> = ({
                 as="textarea"
                 rows={5}
                 placeholder="Write the announcement content here..."
-                className="mt-1 block w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+                className="mt-1 block w-full border border-gray-300 dark:border-gray-600 outline-none dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
               />
               <ErrorMessage name="content" component="div" className="text-red-500 text-sm mt-1" />
             </div>

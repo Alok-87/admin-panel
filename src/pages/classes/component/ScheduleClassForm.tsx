@@ -30,7 +30,7 @@ const ScheduleClassForm: React.FC<ScheduleClassFormProps> = ({
   submitLabel = 'Create Session',
 }) => {
   return (
-    <div className="flex flex-col items-center justify-center w-full max-w-6xl rounded-xl bg-white dark:bg-gray-600 mx-auto p-6 shadow">
+    <div className="flex flex-col items-center justify-center w-full max-w-6xl rounded-xl bg-white dark:bg-gray-800 mx-auto p-6 shadow">
       <h2 className="text-xl font-bold mb-6 text-gray-900 dark:text-white">{title}</h2>
 
       <Formik<ClassesFormValues>
@@ -40,13 +40,13 @@ const ScheduleClassForm: React.FC<ScheduleClassFormProps> = ({
         enableReinitialize
       >
         {() => (
-          <Form className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Form className="w-full grid grid-cols-1 md:grid-cols-2 gap-6  dark:text-gray-300">
             {/* Course ID */}
             <div className="col-span-1">
               <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Course ID</label>
               <Field
                 name="course"
-                className="w-full p-2 border rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-700"
+                className="mt-1 block w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 outline-none focus:ring-brand-500 focus:border-brand-500"
                 placeholder="Enter Course ID"
               />
               <ErrorMessage name="course" component="div" className="text-red-500 text-sm mt-1" />
@@ -57,7 +57,7 @@ const ScheduleClassForm: React.FC<ScheduleClassFormProps> = ({
               <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Instructor ID</label>
               <Field
                 name="instructor"
-                className="w-full p-2 border rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-700"
+              className="mt-1 block w-full border border-gray-300 dark:border-gray-600 outline-none dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
                 placeholder="Enter Instructor ID"
               />
               <ErrorMessage name="instructor" component="div" className="text-red-500 text-sm mt-1" />
@@ -71,12 +71,20 @@ const ScheduleClassForm: React.FC<ScheduleClassFormProps> = ({
                   <DatePicker
                     selected={field.value ? new Date(field.value) : null}
                     onChange={(date: Date | null) =>
-                      form.setFieldValue('date', date ? date.toISOString().split('T')[0] : '')
+                      form.setFieldValue(
+                        'date',
+                        date
+                          ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(
+                            date.getDate()
+                          ).padStart(2, '0')}`
+                          : ''
+                      )
                     }
-                    className="w-full p-2 border rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-700"
+                  className="mt-1 block w-full border border-gray-300 dark:border-gray-600 outline-none dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
                     placeholderText="Select a date"
                     dateFormat="yyyy-MM-dd"
                   />
+
                 )}
               </Field>
               <ErrorMessage name="date" component="div" className="text-red-500 text-sm mt-1" />
@@ -88,7 +96,7 @@ const ScheduleClassForm: React.FC<ScheduleClassFormProps> = ({
               <Field
                 type="text"
                 name="time"
-                className="w-full p-2 border rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-700"
+              className="mt-1 block w-full border border-gray-300 dark:border-gray-600 outline-none dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
                 placeholder="e.g. 10:30 AM"
               />
               <ErrorMessage name="time" component="div" className="text-red-500 text-sm mt-1" />
@@ -100,7 +108,7 @@ const ScheduleClassForm: React.FC<ScheduleClassFormProps> = ({
               <Field
                 as="select"
                 name="mode"
-                className="w-full p-2 border rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-700"
+              className="mt-1 block w-full border border-gray-300 dark:border-gray-600 outline-none dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
               >
                 <option value="">Select mode</option>
                 <option value="online">Online</option>
@@ -115,7 +123,7 @@ const ScheduleClassForm: React.FC<ScheduleClassFormProps> = ({
               <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Meeting Link</label>
               <Field
                 name="link"
-                className="w-full p-2 border rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-700"
+              className="mt-1 block w-full border border-gray-300 dark:border-gray-600 outline-none dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
                 placeholder="Enter meeting URL"
               />
               <ErrorMessage name="link" component="div" className="text-red-500 text-sm mt-1" />
@@ -124,14 +132,14 @@ const ScheduleClassForm: React.FC<ScheduleClassFormProps> = ({
             {/* Is Cancelled */}
             <div className="col-span-1 flex items-center space-x-2 mt-1">
               <Field type="checkbox" name="isCancelled" className="accent-brand-500" />
-              <label className="text-sm text-gray-700 dark:text-gray-300">Is this session cancelled?</label>
+              <label className="text-sm text-gray-700 dark:text-gray-300 ">Is this session cancelled?</label>
             </div>
 
             {/* Submit Button - Full width on small, half on medium+ */}
             <div className="col-span-full">
               <button
                 type="submit"
-                className="w-full md:w-auto px-6 py-2 text-white bg-brand-500 hover:bg-brand-600 dark:bg-brand-600 dark:hover:bg-brand-700 rounded transition"
+                className="w-full md:w-auto px-6 py-2 text-white bg-brand-500 hover:bg-brand-600  rounded transition"
               >
                 {submitLabel}
               </button>

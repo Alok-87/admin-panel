@@ -14,10 +14,11 @@ import { AppDispatch } from '../../../redux/store';
 import { createAdmissionInquiries } from '../../../redux/slices/admission';
 import { AdmissionFormValues } from './types';
 import { AdmissionStatus } from './types';
+import { useNavigate } from 'react-router';
 
 const AdmissionForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-
+  const navigate = useNavigate()
   const formik = useFormik<AdmissionFormValues>({
     initialValues: {
       name: '',
@@ -37,6 +38,7 @@ const AdmissionForm: React.FC = () => {
     }),
     onSubmit: (values) => {
       dispatch(createAdmissionInquiries(values));
+      navigate("/admission/inquiries")
     },
   });
 
@@ -60,7 +62,7 @@ const AdmissionForm: React.FC = () => {
       <h2 className="text-xl sm:text-2xl font-semibold text-center  dark:text-gray-200">
         Admission Form
       </h2>
-      <form onSubmit={formik.handleSubmit} className="space-y-4">
+      <form onSubmit={formik.handleSubmit} className="space-y-4 dark:text-gray-200">
 
         <div>
           <LabelWithIcon icon={MdPerson} text="Full Name" />
@@ -68,7 +70,7 @@ const AdmissionForm: React.FC = () => {
             type="text"
             name="name"
             placeholder="Full Name"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 dark:focus:ring-brand-400 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
+            className="w-full px-4 py-2  rounded-md outline-none focus:ring-2 focus:ring-brand-500 dark:bg-gray-700"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.name}
@@ -85,7 +87,7 @@ const AdmissionForm: React.FC = () => {
               type="number"
               name="phone"
               placeholder="Phone Number"
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 dark:focus:ring-brand-400 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
+              className="w-full px-4 py-2 rounded-md outline-none focus:ring-2 focus:ring-brand-500 dark:bg-gray-700"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.phone || ''}
@@ -101,8 +103,7 @@ const AdmissionForm: React.FC = () => {
               type="email"
               name="email"
               placeholder="Email Address"
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 dark:focus:ring-brand-400 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
-              onChange={formik.handleChange}
+              className="w-full px-4 py-2 rounded-md outline-none focus:ring-2 focus:ring-brand-500 dark:bg-gray-700"
               onBlur={formik.handleBlur}
               value={formik.values.email}
             />
@@ -118,8 +119,7 @@ const AdmissionForm: React.FC = () => {
             type="text"
             name="courseInterest"
             placeholder="Interested Course"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 dark:focus:ring-brand-400 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
-            onChange={formik.handleChange}
+            className="w-full px-4 py-2 rounded-md outline-none focus:ring-2 focus:ring-brand-500 dark:bg-gray-700"
             onBlur={formik.handleBlur}
             value={formik.values.courseInterest}
           />
@@ -133,8 +133,7 @@ const AdmissionForm: React.FC = () => {
           <textarea
             name="message"
             placeholder="Message (Optional)"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 dark:focus:ring-brand-400 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
-            rows={4}
+           className="w-full px-4 py-2 rounded-md outline-none focus:ring-2 focus:ring-brand-500 dark:bg-gray-700"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.message}
@@ -145,7 +144,7 @@ const AdmissionForm: React.FC = () => {
           <LabelWithIcon icon={MdPendingActions} text="Status" />
           <select
             name="status"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 dark:focus:ring-brand-400 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+           className="w-full px-4 py-2 rounded-md outline-none focus:ring-2 focus:ring-brand-500 dark:bg-gray-700"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.status}
@@ -159,7 +158,7 @@ const AdmissionForm: React.FC = () => {
 
         <button
           type="submit"
-          className="w-full bg-brand-500 hover:bg-brand-600 dark:bg-brand-600 dark:hover:bg-brand-700 text-white py-2 rounded-md font-semibold transition duration-200"
+          className="w-full bg-brand-500 hover:bg-brand-600 dark:bg-brand-600  text-white py-2 rounded-md font-semibold transition duration-200"
         >
           Submit
         </button>

@@ -48,7 +48,7 @@ const UserForm = ({ initialValues, isEditMode = false, onSubmit }: UserFormProps
               type="text"
               name="name"
               placeholder="Enter full name"
-              className="w-full px-4 py-2 border rounded dark:bg-gray-700 focus:ring-2 focus:ring-brand-500"
+              className="mt-1 block w-full border border-gray-300 dark:border-gray-600 outline-none dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
             />
             <ErrorMessage name="name" component="div" className="text-red-500 text-sm" />
           </div>
@@ -62,7 +62,7 @@ const UserForm = ({ initialValues, isEditMode = false, onSubmit }: UserFormProps
               type="email"
               name="email"
               placeholder="Enter email address"
-              className="w-full px-4 py-2 border rounded dark:bg-gray-700 focus:ring-2 focus:ring-brand-500"
+            className="mt-1 block w-full border border-gray-300 dark:border-gray-600 outline-none dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
             />
             <ErrorMessage name="email" component="div" className="text-red-500 text-sm" />
           </div>
@@ -77,7 +77,7 @@ const UserForm = ({ initialValues, isEditMode = false, onSubmit }: UserFormProps
                 type="password"
                 name="password"
                 placeholder="Enter password"
-                className="w-full px-4 py-2 border rounded dark:bg-gray-700 focus:ring-2 focus:ring-brand-500"
+                className="mt-1 block w-full border border-gray-300 dark:border-gray-600 outline-none dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
               />
               <ErrorMessage name="password" component="div" className="text-red-500 text-sm" />
             </div>
@@ -91,7 +91,7 @@ const UserForm = ({ initialValues, isEditMode = false, onSubmit }: UserFormProps
             <Field
               as="select"
               name="role"
-              className="w-full px-4 py-2 border rounded dark:bg-gray-700 focus:ring-2 focus:ring-brand-500"
+             className="mt-1 block w-full border border-gray-300 dark:border-gray-600 outline-none dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
             >
               <option value="">Select role</option>
               <option value="telecaller">Telecaller</option>

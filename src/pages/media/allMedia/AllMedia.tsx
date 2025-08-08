@@ -74,14 +74,14 @@ const AllMedia = () => {
         <div className="flex items-center gap-2 bg-white dark:bg-gray-900 px-4 py-2 rounded border border-gray-300 dark:border-gray-600">
           <FaFilter className="text-gray-500 dark:text-gray-300" />
           <select
-            className="bg-transparent text-gray-900 dark:text-white focus:outline-none"
+            className="bg-transparent text-gray-900 dark:text-white  focus:outline-none"
             value={selectedType}
             onChange={(e) => setSelectedType(e.target.value)}
           >
-            <option value="all">All Types</option>
-            <option value="image">Images</option>
-            <option value="video">Videos</option>
-            <option value="document">Documents</option>
+            <option value="all" className="bg-white dark:bg-gray-800"> Types</option>
+            <option value="image" className="bg-white dark:bg-gray-800">Images</option>
+            <option value="video" className="bg-white dark:bg-gray-800">Videos</option>
+            <option value="document" className="bg-white dark:bg-gray-800">Documents</option>
           </select>
         </div>
       </div>

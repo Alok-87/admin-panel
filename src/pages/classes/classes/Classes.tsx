@@ -94,7 +94,7 @@ const Classes: React.FC = () => {
   };
 
   return (
-    <div className="p-2 sm:p-4">
+    <div>
       <div className="bg-white dark:bg-gray-900 shadow rounded-xl overflow-hidden">
         {/* Calendar Header - Stacked on small screens */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between p-2 sm:p-4 border-b dark:border-gray-700 gap-2 sm:gap-4">
@@ -158,7 +158,7 @@ const Classes: React.FC = () => {
                 className={clsx(
                   'bg-white dark:bg-gray-900 min-h-[4rem] sm:min-h-[6rem] p-1 sm:p-2 overflow-hidden cursor-pointer transition',
                   !isCurrentMonth && 'text-gray-400 dark:text-gray-500',
-                  isSelected && 'ring-1 sm:ring-2 ring-red-500',
+                  isSelected &&
                   isToday && 'bg-red-50 dark:bg-red-900'
                 )}
               >

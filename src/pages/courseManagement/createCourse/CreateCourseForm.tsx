@@ -17,6 +17,7 @@ import { CourseFormValues } from './types';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../redux/store';
 import { createCourse } from '../../../redux/slices/course';
+import { useNavigate } from 'react-router';
 
 const CreateCourseForm = () => {
   const initialValues: CourseFormValues = {
@@ -45,7 +46,7 @@ const CreateCourseForm = () => {
         mode: 'online',
         title: '',
         description: '',
-        price:0,
+        price: 0,
         priceLabel: '',
         features: ['', ''],
       },
@@ -91,11 +92,15 @@ const CreateCourseForm = () => {
   };
 
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate()
   const formik = useFormik({
     initialValues,
     // validationSchema: courseValidationSchema,
-    onSubmit: (values) => {
-      dispatch(createCourse(values))
+    onSubmit: async (values) => {
+      const result = await dispatch(createCourse(values));
+      if (createCourse.fulfilled.match(result)) {
+        navigate("/course/list")
+      }
     },
   });
 
@@ -120,7 +125,7 @@ const CreateCourseForm = () => {
         <div className="pt-4">
           <button
             type="submit"
-           className="py-2 px-4 sm:py-3 sm:px-6 bg-brand-500 hover:bg-brand-600 text-white rounded-md transition-colors"
+            className="py-2 px-4 sm:py-3 sm:px-6 bg-brand-500 hover:bg-brand-600 text-white rounded-md transition-colors"
 
           >
             Create Course

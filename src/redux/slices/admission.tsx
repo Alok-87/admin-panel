@@ -46,7 +46,7 @@ export const createAdmissionInquiries = createAsyncThunk(
   async (formData: AdmissionFormPayload, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post('/api/admissions/inquiries', formData);
-      return response.data;
+      return response.data.data;
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || 'Submission failed');
     }

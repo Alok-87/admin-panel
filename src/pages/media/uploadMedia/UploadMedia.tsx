@@ -178,10 +178,11 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../redux/store';
 import { uploadMedia } from '../../../redux/slices/media';
 import { MediaFormValues } from './types'; // Adjust path as needed
+import { useNavigate } from 'react-router';
 
 const MediaUpload = () => {
   const dispatch = useDispatch<AppDispatch>();
-
+  const navigate = useNavigate();
   const handleTagChange = (index: number, value: string) => {
     const newTags = [...formik.values.tags];
     newTags[index] = value;
@@ -219,7 +220,10 @@ const MediaUpload = () => {
     onSubmit: async (values, { setSubmitting }) => {
       try {
 
-        await dispatch(uploadMedia(values)); // Ensure `uploadMedia` accepts FormData
+        const response = await dispatch(uploadMedia(values))
+        if(uploadMedia.fulfilled.match(response)){
+          navigate("/allmedia")
+        }
       } finally {
         setSubmitting(false);
       }
@@ -231,7 +235,7 @@ const MediaUpload = () => {
   return (
     <form
       onSubmit={formik.handleSubmit}
-      className="space-y-4 bg-white dark:bg-gray-800 px-4 py-5 rounded-xl shadow-sm"
+      className="space-y-4 bg-white dark:bg-gray-800 px-4 py-5 rounded-xl shadow-sm dark:text-gray-200"
     >
       <h1 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white">
         Upload Media 
@@ -248,7 +252,7 @@ const MediaUpload = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.title}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:bg-gray-700 dark:text-white"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 dark:focus:ring-brand-500 dark:bg-gray-700 dark:text-white"
         />
         {formik.touched.title && formik.errors.title && (
           <div className="text-red-500 dark:text-red-400 text-xs mt-1">{formik.errors.title}</div>
@@ -269,7 +273,7 @@ const MediaUpload = () => {
             const file = event.currentTarget.files?.[0] || null;
             formik.setFieldValue("file", file);
           }}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-gray-600 dark:file:text-gray-200"
+          className=" px-3 py-2 border border-gray-300 dark:border-gray-600 dark:text-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 dark:focus:ring-brand-500 file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-gray-600 dark:file:text-gray-200"
         />
         {formik.touched.file && formik.errors.file && (
           <div className="text-red-500 dark:text-red-400 text-xs mt-1">{formik.errors.file}</div>
@@ -287,7 +291,7 @@ const MediaUpload = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.type}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:bg-gray-700 dark:text-white"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 dark:focus:ring-brand-500 dark:bg-gray-700 dark:text-white"
         >
           <option value="image">Image</option>
           <option value="video">Video</option>
@@ -308,7 +312,7 @@ const MediaUpload = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           checked={formik.values.isFeatured}
-          className="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-400 dark:bg-gray-700 dark:checked:bg-indigo-500"
+          className="h-4 w-4 rounded border-gray-300 dark:border-gray-600  dark:bg-gray-700 focus-2 focus:ring-brand-500"
         />
         <label htmlFor="isFeatured" className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
           Featured Media
@@ -327,7 +331,7 @@ const MediaUpload = () => {
                 type="text"
                 value={tag}
                 onChange={(e) => handleTagChange(index, e.target.value)}
-                className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 dark:bg-gray-700 dark:text-white"
+                className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2  focus:ring-brand-500 dark:bg-gray-700 "
                 placeholder={`Tag ${index + 1}`}
               />
               {formik.values.tags.length > 1 && (
@@ -379,7 +383,7 @@ const MediaUpload = () => {
         <button
           type="submit"
           disabled={formik.isSubmitting}
-          className="px-6 py-3 bg-brand-500 hover:bg-brand-600 dark:bg-brand-600 dark:hover:bg-brand-700 text-white rounded-md transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+          className="px-6 py-3 bg-brand-500 hover:bg-brand-600 dark:bg-brand-600  text-white rounded-md transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
         >
           {formik.isSubmitting ? (
             <span className="flex items-center justify-center">

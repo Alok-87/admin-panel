@@ -4,12 +4,18 @@ import { AnnouncementFormValues } from '../type'; // adjust path if needed
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../redux/store';
 import { createAnnouncement } from '../../../redux/slices/announcement';
+import { useNavigate } from 'react-router';
 
 
 const CreateAnnouncements = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>();
-  const handleSubmit = (values: AnnouncementFormValues) => {
-    dispatch(createAnnouncement(values)); 
+  const handleSubmit = async (values: AnnouncementFormValues) => {
+    const response  = await dispatch(createAnnouncement(values)); 
+    if(createAnnouncement.fulfilled.match(response))
+    {
+      navigate("/announcements")
+    }
   };
 
   return (
