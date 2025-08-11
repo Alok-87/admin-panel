@@ -8,6 +8,8 @@ import mediaReducer from './slices/media'
 import announcementReducer from './slices/announcement'
 import userReducer from './slices/users'
 import adminDashboardReducer from './slices/dashboard'
+import orderReducer from './slices/order'
+import paymentReducer from './slices/payment'
 
 export const store = configureStore({
   reducer: {
@@ -20,6 +22,8 @@ export const store = configureStore({
     announcement : announcementReducer,
     user:userReducer,
     adminDashboard : adminDashboardReducer,
+    order : orderReducer,
+    payment : paymentReducer,
   },
 })
 

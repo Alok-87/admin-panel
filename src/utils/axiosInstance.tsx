@@ -1,11 +1,9 @@
 // utils/axiosInstance.ts
 import axios from 'axios';
-import Cookies from 'js-cookie';
-
 const token = localStorage.getItem('token');
 // Create Axios instance
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8000',  
+  baseURL: 'http://localhost:5000',  
    headers: {
     Authorization: `Bearer ${token}`
   }

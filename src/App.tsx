@@ -29,6 +29,10 @@ import ProtectedRoute from "./components/common/ProtectedRoute";
 import CreateUser from "./pages/users&roles/createUser/CreateUser";
 import UserList from "./pages/users&roles/userList/UserList";
 import EditUser from "./pages/users&roles/editUser/EditUser";
+import AllOrders from "./pages/orders/allOrders/AllOrders";
+import OrderDetail from "./pages/orders/order/OrderDetail";
+import AllPayments from "./pages/payments/AllPayments/AllPayments";
+import PaymentDetail from "./pages/payments/Payment/PaymentDetail";
 
 export default function App() {
   const { isLogin, loading } = useSelector((state: RootState) => state.auth);
@@ -38,7 +42,7 @@ export default function App() {
     dispatch(gotme())
   }, []);
 
-  if (loading) return null; // or return <LoadingSpinner />
+  if (loading) return null;
 
   return (
     <Router>
@@ -118,7 +122,7 @@ export default function App() {
           />
 
           {/* Live Classes */}
-          <Route path="/live-classes/calendar" element={ <ProtectedRoute allowedRoles={["admin", "manager"]}><Classes /></ProtectedRoute>} />
+          <Route path="/live-classes/calendar" element={<ProtectedRoute allowedRoles={["admin", "manager"]}><Classes /></ProtectedRoute>} />
           <Route path="/live-classes/create" element={<ProtectedRoute allowedRoles={["admin", "manager"]}><CreateClass /></ProtectedRoute>} />
           <Route path="/live-classes/edit/:id" element={<ProtectedRoute allowedRoles={["admin", "manager"]}><EditClass /></ProtectedRoute>} />
 
@@ -152,9 +156,45 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+
+
+          {/* orders */}
+          <Route
+            path="/orders"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AllOrders />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/order/:id"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <OrderDetail />
+              </ProtectedRoute>
+            }
+          />
+
+
+          {/* Payments */}
+          <Route
+            path="/payments"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AllPayments/>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/payment/:id"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <PaymentDetail />
+              </ProtectedRoute>
+            }
+          />
         </Route>
-
-
         {/* Fallback Route */}
         <Route path="*" element={<NotFound />} />
       </Routes >

@@ -67,6 +67,18 @@ const navItems: NavItem[] = [
     roles: ["admin"],
     subItems: [{ name: "User List", path: "/admin/users", pro: false }, { name: "Create New User", path: "/admin/users/create", pro: false }],
   },
+  {
+    icon: <GridIcon />,
+    name: "Orders",
+    roles: ["admin"],
+    subItems: [{ name: "Orders", path: "/orders", pro: false }],
+  },
+  {
+    icon: <GridIcon />,
+    name: "Payments",
+    roles: ["admin"],
+    subItems: [{ name: "Payments", path: "/payments", pro: false }],
+  },
 
 
   // {
