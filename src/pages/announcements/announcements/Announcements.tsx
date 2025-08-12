@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteAnnouncement, getAllAnnouncement } from '../../../redux/slices/announcement';
 import { AppDispatch, RootState } from '../../../redux/store';
-import { FiFilter, FiEdit, FiTrash2 } from 'react-icons/fi';
+import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router';
+import FilterDropdown from "../components/FilterDropdown";
 
 const Announcements = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -13,7 +14,6 @@ const Announcements = () => {
         (state: RootState) => state.announcement
     );
 
-    const [showFilters, setShowFilters] = useState(false);
     const [expandedIds, setExpandedIds] = useState<string[]>([]);
 
     useEffect(() => {
@@ -40,6 +40,16 @@ const Announcements = () => {
         navigate(`/announcements/edit/${id}`)
     }
 
+
+
+    const handleApplyFilters = (filters: { status?: string; course?: string; date?: string }) => {
+        // Build query string
+        const query = new URLSearchParams(filters as Record<string, string>).toString();
+        console.log(query)
+        // dispatch(getAllAnnouncement(query)); // getAllAnnouncement should accept query string
+    };
+
+
     const renderTableContent = () => {
         return announcements.length > 0 ? (
             announcements.map((a, index) => {
@@ -47,8 +57,8 @@ const Announcements = () => {
                 const shortContent = a.content.slice(0, 100);
 
                 return (
-                    <tr 
-                        key={a._id} 
+                    <tr
+                        key={a._id}
                         className={`border-b ${index % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-white dark:bg-gray-800'} hover:bg-gray-100 dark:hover:bg-gray-600`}
                     >
                         <td className="py-3 px-4 sm:px-6 font-medium text-gray-900 dark:text-white">{a.title}</td>
@@ -98,13 +108,7 @@ const Announcements = () => {
         <div className="max-w-6xl mx-auto py-4 sm:py-8 px-2 sm:px-4">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 sm:mb-6">
                 <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white">📢 Announcements</h1>
-                <button
-                    onClick={() => setShowFilters(!showFilters)}
-                    className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-black dark:bg-gray-800 dark:text-white rounded-md shadow hover:bg-gray-200 dark:hover:bg-gray-700 transition"
-                >
-                    <FiFilter className="w-4 h-4" />
-                    {showFilters ? 'Hide Filters' : 'Show Filters'}
-                </button>
+                <FilterDropdown onApply={handleApplyFilters} />
             </div>
 
             {error && (

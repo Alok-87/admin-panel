@@ -23,8 +23,8 @@ const EditClass = () => {
   useEffect(() => {
     if (selectedClass) {
       setInitialValues({
-        course: selectedClass.course || '',
-        instructor: selectedClass.instructor || '',
+        course: selectedClass.course._id || '',
+        instructor: selectedClass.course.faculty[0]._id || '',
         date: selectedClass.date || '',
         time: selectedClass.time || '',
         mode: selectedClass.mode || 'online',

@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../../redux/store";
-import { FiFilter } from "react-icons/fi";
 import { getAllOrders } from "../../../redux/slices/order";
 import { FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router";
+import FilterDropdown from "../components/FilterDropdown";
 
 const AllOrders = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -12,6 +12,8 @@ const AllOrders = () => {
   const { orders, loading, error } = useSelector(
     (state: RootState) => state.order
   );
+
+  console.log("order",orders)
 
   useEffect(() => {
     dispatch(getAllOrders());
@@ -21,6 +23,14 @@ const AllOrders = () => {
     navigate(`/order/${id}`);
   };
 
+   const handleApplyFilters = (filters: { status?: string; course?: string; date?: string }) => {
+    // Build query string
+    const query = new URLSearchParams(filters as Record<string, string>).toString();
+    console.log(query)
+    // dispatch(getAllAnnouncement(query)); // getAllAnnouncement should accept query string
+  };
+
+
   return (
     <div className="p-4 sm:p-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-4">
@@ -28,15 +38,7 @@ const AllOrders = () => {
           Users
         </h1>
         <div className="flex gap-2">
-          <button
-            onClick={() => {
-              // Handle filter logic
-            }}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-black dark:bg-gray-800 dark:text-white rounded-md shadow hover:bg-gray-200 dark:hover:bg-gray-700 transition"
-          >
-            <FiFilter className="text-lg" />
-            Filter
-          </button>
+          <FilterDropdown  onApply={handleApplyFilters}/>
         </div>
       </div>
 
@@ -78,7 +80,7 @@ const AllOrders = () => {
                     </span>
                   </td>
                   <td className="p-4 text-gray-800 dark:text-gray-100">
-                    {order.course.id}
+                    {order.course.title}
                   </td>
                   <td className="p-4 text-gray-700 dark:text-gray-200">
                     {order.mobileNumber}

@@ -5,6 +5,7 @@ import { AppDispatch, RootState } from "../../../redux/store";
 import { deleteUser, getAllUsers } from "../../../redux/slices/users"
 import { FiFilter, FiEdit, FiTrash2 } from "react-icons/fi";
 import { useNavigate } from "react-router";
+import FilterDropdown from "../components/FilterDropdown";
 
 // import { Button } from "@/components/ui/button";
 // import { Input } from "@/components/ui/input";
@@ -34,20 +35,19 @@ const UserList = () => {
     navigate(`/admin/users/edit/${id}`)
   }
 
+  const handleApplyFilters = (filters: { status?: string; course?: string; date?: string }) => {
+    // Build query string
+    const query = new URLSearchParams(filters as Record<string, string>).toString();
+    console.log(query)
+    // dispatch(getAllAnnouncement(query)); // getAllAnnouncement should accept query string
+  };
+
   return (
     <div className="p-4 sm:p-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-4">
         <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Users</h1>
         <div className="flex gap-2">
-          <button
-            onClick={() => {
-              // Handle filter logic
-            }}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-black dark:bg-gray-800 dark:text-white rounded-md shadow hover:bg-gray-200 dark:hover:bg-gray-700 transition"
-          >
-            <FiFilter className="text-lg" />
-            Filter
-          </button>
+          <FilterDropdown onApply={handleApplyFilters}/>
         </div>
       </div>
 
