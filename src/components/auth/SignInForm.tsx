@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { EyeCloseIcon, EyeIcon } from '../../icons';
 import { AppDispatch, RootState } from '../../redux/store';
 import { login } from '../../redux/slices/auth';
-import {Link, useNavigate} from "react-router-dom"
+import {Link} from "react-router-dom"
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required('email is required'),
@@ -16,14 +16,15 @@ const SignInForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const { loading, error } = useSelector((state: RootState) => state.auth);
-  const navigate = useNavigate();
 
-  const handleSubmit = async(values: { email: string; password: string }) => {
-    const resultAction = await dispatch(login(values));
-     if (login.fulfilled.match(resultAction)) {
-        navigate('/'); 
-      } 
-  };
+
+const handleSubmit = async (values: { email: string; password: string }) => {
+  const resultAction = await dispatch(login(values));
+  if (login.fulfilled.match(resultAction)) {
+    window.location.href = '/'; // ✅ force reload and go to dashboard
+  }
+};
+
 
   return (
     <div className="flex flex-col flex-1">

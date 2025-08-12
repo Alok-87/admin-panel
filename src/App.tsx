@@ -40,7 +40,7 @@ export default function App() {
 
   useEffect(() => {
     dispatch(gotme())
-  }, []);
+  }, [dispatch]);
 
   if (loading) return null;
 
