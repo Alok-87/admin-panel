@@ -4,7 +4,7 @@ import { AppDispatch, RootState } from '../../../redux/store'; // adjust path if
 import { getAllInQuiries } from '../../../redux/slices/admission';
 import InquiriesList from './InquiriesList';
 
-const Inquiries: React.FC = () => {
+const Inquiries = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { inquiries, loading, error } = useSelector((state: RootState) => state.admission);
