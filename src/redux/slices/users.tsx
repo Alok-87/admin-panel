@@ -1,5 +1,7 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import axiosInstance from '../../utils/axiosInstance';
+import axios from 'axios';
+
 // -------- TYPES --------
 export interface UserPayload {
     name: string;
@@ -8,12 +10,11 @@ export interface UserPayload {
     role: 'admin' | 'manager' | 'telecaller' | 'user';
 }
 
-export interface User 
-{
-    _id:string,
+export interface User {
+    _id: string;
     name: string;
     email: string;
-    password?: string; // optional for update
+    password?: string;
     role: 'admin' | 'manager' | 'telecaller' | 'user';
 }
 
@@ -34,71 +35,72 @@ const initialState: UserState = {
     success: false,
 };
 
+// Utility to handle Axios errors
+const handleAxiosError = (err: unknown, defaultMsg: string) => {
+    if (axios.isAxiosError(err)) {
+        return err.response?.data?.message || defaultMsg;
+    }
+    return defaultMsg;
+};
+
 // --------- ASYNC THUNKS ---------
 
-// Create user
-export const createUser = createAsyncThunk(
+export const createUser = createAsyncThunk<User, UserPayload, { rejectValue: string }>(
     'user/create',
-    async (values: UserPayload, { rejectWithValue }) => {
+    async (values, { rejectWithValue }) => {
         try {
-            const res = await axiosInstance.post('/api/users', values);
+            const res = await axiosInstance.post<User>('/api/users', values);
             return res.data;
-        } catch (err: any) {
-            return rejectWithValue(err.response?.data?.message || 'Create failed');
+        } catch (err: unknown) {
+            return rejectWithValue(handleAxiosError(err, 'Create failed'));
         }
     }
 );
 
-// Get all users
-export const getAllUsers = createAsyncThunk(
+export const getAllUsers = createAsyncThunk<User[], void, { rejectValue: string }>(
     'user/getAll',
     async (_, { rejectWithValue }) => {
         try {
-            const res = await axiosInstance.get('/api/users');
+            const res = await axiosInstance.get<{ data: User[] }>('/api/users');
             return res.data.data;
-        } catch (err: any) {
-            return rejectWithValue(err.response?.data?.message || 'Failed to fetch users');
+        } catch (err: unknown) {
+            return rejectWithValue(handleAxiosError(err, 'Failed to fetch users'));
         }
     }
 );
 
-
-// Get user by ID
-export const getUserById = createAsyncThunk(
+export const getUserById = createAsyncThunk<User, string, { rejectValue: string }>(
     'user/getById',
-    async (id: string, { rejectWithValue }) => {
+    async (id, { rejectWithValue }) => {
         try {
-            const res = await axiosInstance.get(`/api/users/${id}`);
+            const res = await axiosInstance.get<{ data: User }>(`/api/users/${id}`);
             return res.data.data;
-        } catch (err: any) {
-            return rejectWithValue(err.response?.data?.message || 'Fetch failed');
+        } catch (err: unknown) {
+            return rejectWithValue(handleAxiosError(err, 'Fetch failed'));
         }
     }
 );
 
-// Update user
-export const updateUser = createAsyncThunk(
+export const updateUser = createAsyncThunk<User, { id: string; formData: UserPayload }, { rejectValue: string }>(
     'user/update',
-    async ({ id, formData }: { id: string; formData: UserPayload }, { rejectWithValue }) => {
+    async ({ id, formData }, { rejectWithValue }) => {
         try {
-            console.log("test",formData)
-            const res = await axiosInstance.put(`/api/users/${id}`, formData);
+            const res = await axiosInstance.put<User>(`/api/users/${id}`, formData);
             return res.data;
-        } catch (err: any) {
-            return rejectWithValue(err.response?.data?.message || 'Update failed');
+        } catch (err: unknown) {
+            return rejectWithValue(handleAxiosError(err, 'Update failed'));
         }
     }
 );
 
-// Delete user
-export const deleteUser = createAsyncThunk(
+export const deleteUser = createAsyncThunk<{ message: string }, string, { rejectValue: string }>(
     'user/delete',
-    async (id: string, { rejectWithValue }) => {
+    async (id, { rejectWithValue }) => {
         try {
-            const res = await axiosInstance.delete(`/api/users/${id}`);
+            const res = await axiosInstance.delete<{ message: string }>(`/api/users/${id}`);
             return res.data;
-        } catch (err: any) {
-            return rejectWithValue(err.response?.data?.message || 'Delete failed');
+        } catch (err: unknown) {
+            return rejectWithValue(handleAxiosError(err, 'Delete failed'));
         }
     }
 );
@@ -107,9 +109,7 @@ export const deleteUser = createAsyncThunk(
 const userSlice = createSlice({
     name: 'user',
     initialState,
-    reducers: {
-
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             // CREATE
@@ -118,14 +118,14 @@ const userSlice = createSlice({
                 state.error = null;
                 state.success = false;
             })
-            .addCase(createUser.fulfilled, (state, action: PayloadAction<User>) => {
+            .addCase(createUser.fulfilled, (state, action) => {
                 state.loading = false;
                 state.success = true;
                 state.user = action.payload;
             })
             .addCase(createUser.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload as string;
+                state.error = action.payload || null;
             })
 
             // GET ALL USERS
@@ -133,28 +133,27 @@ const userSlice = createSlice({
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(getAllUsers.fulfilled, (state, action: PayloadAction<User[]>) => {
+            .addCase(getAllUsers.fulfilled, (state, action) => {
                 state.loading = false;
                 state.users = action.payload;
             })
             .addCase(getAllUsers.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload as string;
+                state.error = action.payload || null;
             })
-
 
             // GET BY ID
             .addCase(getUserById.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(getUserById.fulfilled, (state, action: PayloadAction<User>) => {
+            .addCase(getUserById.fulfilled, (state, action) => {
                 state.loading = false;
                 state.user = action.payload;
             })
             .addCase(getUserById.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload as string;
+                state.error = action.payload || null;
             })
 
             // UPDATE
@@ -163,14 +162,14 @@ const userSlice = createSlice({
                 state.success = false;
                 state.error = null;
             })
-            .addCase(updateUser.fulfilled, (state, action: PayloadAction<User>) => {
+            .addCase(updateUser.fulfilled, (state, action) => {
                 state.loading = false;
                 state.success = true;
                 state.user = action.payload;
             })
             .addCase(updateUser.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload as string;
+                state.error = action.payload || null;
             })
 
             // DELETE
@@ -186,10 +185,9 @@ const userSlice = createSlice({
             })
             .addCase(deleteUser.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload as string;
+                state.error = action.payload || null;
             });
     },
 });
-
 
 export default userSlice.reducer;

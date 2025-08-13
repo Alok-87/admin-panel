@@ -1,19 +1,19 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axiosInstance from '../../utils/axiosInstance';
+import axios from 'axios';
 
 // -------- TYPES --------
 export interface Payment {
   _id: string;
   currency: string; // e.g., INR
   status: string; // e.g., completed
-  order: string ;// populated later if needed
+  order: string; // populated later if needed
   transactionId: string;
   amount: number;
   method: string; // e.g., razorpay
   paidAt: string;
   __v?: number;
 }
-
 
 export interface Course {
   _id: string;
@@ -38,32 +38,46 @@ const initialState: PaymentState = {
   payment: null,
 };
 
+// Utility to handle Axios errors
+const handleAxiosError = (err: unknown, defaultMsg: string) => {
+  if (axios.isAxiosError(err)) {
+    return err.response?.data?.message || defaultMsg;
+  }
+  return defaultMsg;
+};
+
 // -------- ASYNC THUNKS --------
 
 // Get all payments
-export const getAllPayments = createAsyncThunk(
+export const getAllPayments = createAsyncThunk<
+  Payment[], // Returned data
+  void,      // Argument type
+  { rejectValue: string } // Rejected value type
+>(
   'payments/getAll',
   async (_, { rejectWithValue }) => {
     try {
-      const res = await axiosInstance.get('/api/payments');
-      return res.data.data as Payment[];
-    } catch (err: any) {
-      return rejectWithValue(
-        err.response?.data?.message || 'Failed to fetch payments'
-      );
+      const res = await axiosInstance.get<{ data: Payment[] }>('/api/payments');
+      return res.data.data;
+    } catch (err: unknown) {
+      return rejectWithValue(handleAxiosError(err, 'Failed to fetch payments'));
     }
   }
 );
 
 // Get payment by ID
-export const getPaymentById = createAsyncThunk(
+export const getPaymentById = createAsyncThunk<
+  Payment,
+  string,
+  { rejectValue: string }
+>(
   'payments/getById',
-  async (id: string, { rejectWithValue }) => {
+  async (id, { rejectWithValue }) => {
     try {
-      const res = await axiosInstance.get(`/api/payments/${id}`);
-      return res.data.data as Payment;
-    } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || 'Fetch failed');
+      const res = await axiosInstance.get<{ data: Payment }>(`/api/payments/${id}`);
+      return res.data.data;
+    } catch (err: unknown) {
+      return rejectWithValue(handleAxiosError(err, 'Fetch failed'));
     }
   }
 );
@@ -80,16 +94,13 @@ const paymentSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(
-        getAllPayments.fulfilled,
-        (state, action: PayloadAction<Payment[]>) => {
-          state.loading = false;
-          state.payments = action.payload;
-        }
-      )
+      .addCase(getAllPayments.fulfilled, (state, action) => {
+        state.loading = false;
+        state.payments = action.payload;
+      })
       .addCase(getAllPayments.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string;
+        state.error = action.payload || null;
       })
 
       // GET BY ID
@@ -97,16 +108,13 @@ const paymentSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(
-        getPaymentById.fulfilled,
-        (state, action: PayloadAction<Payment>) => {
-          state.loading = false;
-          state.payment = action.payload;
-        }
-      )
+      .addCase(getPaymentById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.payment = action.payload;
+      })
       .addCase(getPaymentById.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string;
+        state.error = action.payload || null;
       });
   },
 });

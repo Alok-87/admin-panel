@@ -217,10 +217,10 @@ const AppSidebar: React.FC = () => {
     return (
       <ul className="flex flex-col gap-4">
         {items
-          .filter((nav) => !nav.roles || nav.roles.includes(user?.role)) // <-- Main item role check
+          .filter((nav) => !nav.roles || nav.roles.includes(user?.role ?? ""))
           .map((nav, index) => {
             const filteredSubItems = nav.subItems?.filter(
-              (subItem) => !subItem.roles || subItem.roles.includes(user?.role)
+              (subItem) => !subItem.roles || subItem.roles.includes(user?.role ?? "")
             );
 
             if (nav.subItems && (!filteredSubItems || filteredSubItems.length === 0)) {

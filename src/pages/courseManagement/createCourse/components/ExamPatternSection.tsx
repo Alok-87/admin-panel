@@ -48,18 +48,6 @@ const ExamPatternSection = ({ formik }: { formik: FormikProps<CourseFormValues> 
           />
           <p className="mt-1 text-xs text-gray-500">Scoring pattern including negative marking</p>
         </div>
-
-        {/* Additional Info (optional) */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Additional Notes</label>
-          <textarea
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Any other important exam details..."
-            rows={3}
-            onChange={(e) => formik.setFieldValue('examPattern.additionalNotes', e.target.value)}
-            value={(formik.values.examPattern as any).additionalNotes || ''}
-          />
-        </div>
       </div>
     </CollapsibleSection>
   );

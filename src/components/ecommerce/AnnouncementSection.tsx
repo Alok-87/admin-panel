@@ -17,7 +17,7 @@ const AnnouncementSection = () => {
     }, [])
 
     return (
-        <div className="bg-white rounded-lg shadow-md p-6 dark:bg-gray-800 dark:bg-white/[0.03] dark:text-gray-300">
+        <div className="bg-white rounded-lg shadow-md p-6 dark:border-gray-800 dark:bg-white/[0.03] dark:text-gray-300">
             <div className="flex items-center mb-6">
                 <FaBullhorn className="text-brand-500 text-xl mr-2" />
                 <h2 className="text-lg font-semibold dark:text-gray-300">Latest Announcements</h2>

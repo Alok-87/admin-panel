@@ -1,9 +1,14 @@
 import { useState } from 'react';
 
+interface Filters {
+  priceRange: [number, number];
+  categories: string[];
+}
+
 interface FilterSidebarProps {
   isOpen: boolean;
   onClose: () => void;
-  onApplyFilters: (filters: any) => void;
+  onApplyFilters: (filters: Filters) => void;
 }
 
 const FilterSidebar = ({ isOpen, onClose, onApplyFilters }: FilterSidebarProps) => {
@@ -29,7 +34,11 @@ const FilterSidebar = ({ isOpen, onClose, onApplyFilters }: FilterSidebarProps) 
   };
 
   return (
-    <div className={`fixed inset-y-0 right-0 w-80 bg-white shadow-lg transform ${isOpen ? 'translate-x-0' : 'translate-x-full'} transition-transform duration-300 ease-in-out z-50`}>
+    <div
+      className={`fixed inset-y-0 right-0 w-80 bg-white shadow-lg transform ${
+        isOpen ? 'translate-x-0' : 'translate-x-full'
+      } transition-transform duration-300 ease-in-out z-50`}
+    >
       <div className="p-6 h-full flex flex-col">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold">Filters</h2>
@@ -48,7 +57,9 @@ const FilterSidebar = ({ isOpen, onClose, onApplyFilters }: FilterSidebarProps) 
               min="0"
               max="1000"
               value={priceRange[1]}
-              onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
+              onChange={(e) =>
+                setPriceRange([priceRange[0], parseInt(e.target.value)])
+              }
               className="w-full mb-2"
             />
             <div className="flex justify-between">
@@ -61,7 +72,7 @@ const FilterSidebar = ({ isOpen, onClose, onApplyFilters }: FilterSidebarProps) 
         <div className="mb-6">
           <h3 className="font-semibold mb-3">Categories</h3>
           <div className="space-y-2">
-            {categories.map(category => (
+            {categories.map((category) => (
               <label key={category} className="flex items-center">
                 <input
                   type="checkbox"

@@ -2,15 +2,15 @@ import EcommerceMetrics from "../../components/ecommerce/EcommerceMetrics";
 import MonthlySalesChart from "../../components/ecommerce/MonthlySalesChart";
 // import StatisticsChart from "../../components/ecommerce/StatisticsChart";
 // import MonthlyTarget from "../../components/ecommerce/MonthlyTarget";
-import RecentOrders from "../../components/ecommerce/RecentOrders";
-import DemographicCard from "../../components/ecommerce/DemographicCard";
+// import RecentOrders from "../../components/ecommerce/RecentOrders";
+// import DemographicCard from "../../components/ecommerce/DemographicCard";
 import PageMeta from "../../components/common/PageMeta";
 import { useDispatch,useSelector } from "react-redux";
 import { AppDispatch,RootState } from "../../redux/store";
 import { fetchAdminDashboard } from "../../redux/slices/dashboard";
 import { useEffect } from "react";
 import AdmissionInquiries from "../../components/ecommerce/AdmissionInquiries";
-import Calendar from "../Calendar";
+// import Calendar from "../Calendar";
 import Classes from "../classes/classes/Classes";
 import AnnouncementSection from "../../components/ecommerce/AnnouncementSection";
 
@@ -22,6 +22,7 @@ export default function Home() {
   },[])
 
   const {  data } = useSelector((state: RootState) => state.adminDashboard);
+
 
   return (
     <>

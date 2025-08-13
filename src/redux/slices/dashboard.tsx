@@ -1,15 +1,24 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 import axiosInstance from '../../utils/axiosInstance';
+
+// Helper for Axios error handling
+const handleAxiosError = (err: unknown, defaultMsg: string) => {
+  if (axios.isAxiosError(err)) {
+    return err.response?.data?.message || defaultMsg;
+  }
+  return defaultMsg;
+};
 
 export const fetchAdminDashboard = createAsyncThunk(
   'adminDashboard/fetch',
   async (_, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get('/api/dashboard/admin');
-      console.log("admin",response.data.data)
-      return response.data.data; // directly extract the `data` field
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || error.message);
+      console.log("admin", response.data.data);
+      return response.data.data;
+    } catch (error: unknown) {
+      return rejectWithValue(handleAxiosError(error, 'Failed to fetch admin dashboard data'));
     }
   }
 );

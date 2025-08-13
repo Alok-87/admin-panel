@@ -4,7 +4,7 @@ import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import * as Yup from 'yup';
 import Checkbox from "../form/input/Checkbox";
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field } from 'formik';
 
 const SignUpForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);

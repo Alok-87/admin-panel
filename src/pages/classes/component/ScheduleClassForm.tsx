@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ClassesFormValues } from '../type';
+import { FieldProps } from 'formik';
 
 interface ScheduleClassFormProps {
   initialValues: ClassesFormValues;
@@ -57,7 +58,7 @@ const ScheduleClassForm: React.FC<ScheduleClassFormProps> = ({
               <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Instructor ID</label>
               <Field
                 name="instructor"
-              className="mt-1 block w-full border border-gray-300 dark:border-gray-600 outline-none dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+                className="mt-1 block w-full border border-gray-300 dark:border-gray-600 outline-none dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
                 placeholder="Enter Instructor ID"
               />
               <ErrorMessage name="instructor" component="div" className="text-red-500 text-sm mt-1" />
@@ -66,8 +67,9 @@ const ScheduleClassForm: React.FC<ScheduleClassFormProps> = ({
             {/* Date */}
             <div className="col-span-1">
               <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Date</label>
+
               <Field name="date">
-                {({ field, form }: any) => (
+                {({ field, form }: FieldProps) => (
                   <DatePicker
                     selected={field.value ? new Date(field.value) : null}
                     onChange={(date: Date | null) =>
@@ -80,11 +82,10 @@ const ScheduleClassForm: React.FC<ScheduleClassFormProps> = ({
                           : ''
                       )
                     }
-                  className="mt-1 block w-full border border-gray-300 dark:border-gray-600 outline-none dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+                    className="mt-1 block w-full border border-gray-300 dark:border-gray-600 outline-none dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
                     placeholderText="Select a date"
                     dateFormat="yyyy-MM-dd"
                   />
-
                 )}
               </Field>
               <ErrorMessage name="date" component="div" className="text-red-500 text-sm mt-1" />
@@ -96,7 +97,7 @@ const ScheduleClassForm: React.FC<ScheduleClassFormProps> = ({
               <Field
                 type="text"
                 name="time"
-              className="mt-1 block w-full border border-gray-300 dark:border-gray-600 outline-none dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+                className="mt-1 block w-full border border-gray-300 dark:border-gray-600 outline-none dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
                 placeholder="e.g. 10:30 AM"
               />
               <ErrorMessage name="time" component="div" className="text-red-500 text-sm mt-1" />
@@ -108,7 +109,7 @@ const ScheduleClassForm: React.FC<ScheduleClassFormProps> = ({
               <Field
                 as="select"
                 name="mode"
-              className="mt-1 block w-full border border-gray-300 dark:border-gray-600 outline-none dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+                className="mt-1 block w-full border border-gray-300 dark:border-gray-600 outline-none dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
               >
                 <option value="">Select mode</option>
                 <option value="online">Online</option>
@@ -123,7 +124,7 @@ const ScheduleClassForm: React.FC<ScheduleClassFormProps> = ({
               <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Meeting Link</label>
               <Field
                 name="link"
-              className="mt-1 block w-full border border-gray-300 dark:border-gray-600 outline-none dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
+                className="mt-1 block w-full border border-gray-300 dark:border-gray-600 outline-none dark:bg-gray-700 rounded-md px-3 py-2 shadow-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500"
                 placeholder="Enter meeting URL"
               />
               <ErrorMessage name="link" component="div" className="text-red-500 text-sm mt-1" />

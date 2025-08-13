@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { FaUser } from "react-icons/fa";
 import { AppDispatch, RootState } from "../../../redux/store";
 import { deleteUser, getAllUsers } from "../../../redux/slices/users"
-import { FiFilter, FiEdit, FiTrash2 } from "react-icons/fi";
+import {  FiEdit, FiTrash2 } from "react-icons/fi";
 import { useNavigate } from "react-router";
 import FilterDropdown from "../components/FilterDropdown";
+import { useEffect } from "react";
 
 // import { Button } from "@/components/ui/button";
 // import { Input } from "@/components/ui/input";
