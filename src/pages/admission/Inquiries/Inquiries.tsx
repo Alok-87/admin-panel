@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../redux/store'; // adjust path if needed
 import { getAllInQuiries } from '../../../redux/slices/admission';
 import InquiriesList from './InquiriesList';
 
-const EnquiriesPage: React.FC = () => {
+const Inquiries: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { inquiries, loading, error } = useSelector((state: RootState) => state.admission);
@@ -25,4 +25,4 @@ const EnquiriesPage: React.FC = () => {
   );
 };
 
-export default EnquiriesPage;
+export default Inquiries;
