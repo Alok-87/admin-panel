@@ -13,7 +13,6 @@ import CourseList from "./pages/courseManagement/courseList/CourseList";
 import { useEffect } from "react";
 import Course from "./pages/courseManagement/courseDetail/Course";
 import CourseEdit from "./pages/courseManagement/courseEdit/CourseEdit";
-import Inquiries from "./pages/admission/inquiries/Inquiries";
 import Manual_Entry from "./pages/admission/manualEntry/Manual_Entry";
 import AllMedia from "./pages/media/allMedia/AllMedia";
 import UploadMedia from "./pages/media/uploadMedia/UploadMedia";
@@ -33,6 +32,7 @@ import AllOrders from "./pages/orders/allOrders/AllOrders";
 import OrderDetail from "./pages/orders/order/OrderDetail";
 import AllPayments from "./pages/payments/AllPayments/AllPayments";
 import PaymentDetail from "./pages/payments/Payment/PaymentDetail";
+import Inquiries from "./pages/admission/inquiries/Inquiries";
 
 export default function App() {
   const { isLogin, loading } = useSelector((state: RootState) => state.auth);
@@ -97,7 +97,7 @@ export default function App() {
             path="/admission/inquiries"
             element={
               <ProtectedRoute allowedRoles={["admin", "manager"]}>
-                <Inquiries />
+                <Inquiries/>
               </ProtectedRoute>
             }
           />
